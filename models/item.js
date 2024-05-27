@@ -22,7 +22,12 @@ var itemSchema = new Schema(
         manufacturer: String,
         rrp: Currency,
         productImageUrl: String,
-        manualUrl: String
+        manualUrl: String,
+        merchant: {
+            type: Schema.Types.ObjectId,
+            required: true,
+            ref: 'Merchant'
+        }
     },
     { timestamps: true }
 );

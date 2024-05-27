@@ -13,7 +13,7 @@ if (fullscreenButton) {
 }
 
 /* Password Field */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const passwordField = document.getElementById('password-field');
     const toggleIcon = document.getElementById('toggle-icon');
     const togglePassword = () => {
@@ -27,43 +27,49 @@ document.addEventListener('DOMContentLoaded', function() {
             toggleIcon.classList.add('fa-eye');
         }
     };
-    
+
     if (toggleIcon) {
         toggleIcon.addEventListener('click', togglePassword);
     }
 });
 
-
-
 // /* Crancy Options */
-const cs_button = document.querySelectorAll("#crancy__sicon");
-const cs_action = document.querySelectorAll(".crancy-smenu, .crancy-header, .crancy-adashboard");
+const cs_button = document.querySelectorAll('#crancy__sicon');
+const cs_action = document.querySelectorAll(
+    '.crancy-smenu, .crancy-header, .crancy-adashboard'
+);
 
-cs_button.forEach(button => {
-   button.addEventListener("click", function() {
+cs_button.forEach((button) => {
+    button.addEventListener('click', function () {
         cs_action.forEach((el) => {
-           el.classList.toggle("crancy-close");
+            el.classList.toggle('crancy-close');
         });
-        localStorage.setItem("iscicon", cs_action[0].classList.contains("crancy-close"));
+        localStorage.setItem(
+            'iscicon',
+            cs_action[0].classList.contains('crancy-close')
+        );
     });
- });
+});
 
-if (localStorage.getItem("iscicon") === "true") {
-   cs_action.forEach((el) => {
-       el.classList.add("crancy-close");
-   });
+if (localStorage.getItem('iscicon') === 'true') {
+    cs_action.forEach((el) => {
+        el.classList.add('crancy-close');
+    });
 }
 
-
-document.addEventListener("DOMContentLoaded", function() {
-    const crancyDropdowns = document.querySelectorAll(".crancy__dropdown");
+document.addEventListener('DOMContentLoaded', function () {
+    const crancyDropdowns = document.querySelectorAll('.crancy__dropdown');
 
     crancyDropdowns.forEach((crancyDropdown, index) => {
-        const observer = new MutationObserver(function(mutationsList) {
-            const crancyDropdownHasShowClass = crancyDropdown.classList.contains("show");
-            
-            document.querySelectorAll(".admin-menu").forEach((adminMenuOne) => {
-                adminMenuOne.classList.toggle("no-overflow", crancyDropdownHasShowClass);
+        const observer = new MutationObserver(function (mutationsList) {
+            const crancyDropdownHasShowClass =
+                crancyDropdown.classList.contains('show');
+
+            document.querySelectorAll('.admin-menu').forEach((adminMenuOne) => {
+                adminMenuOne.classList.toggle(
+                    'no-overflow',
+                    crancyDropdownHasShowClass
+                );
             });
         });
 
@@ -71,13 +77,15 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-jQuery(document).ready(function($) {
-
-		$('#crancy-header__nav,.crancy-sidebarmenu__close').on( "click", function(){
-			$('.crancy-sidebarmenu').toggleClass('active');
-		});	
-        /*====================================
+jQuery(document).ready(function ($) {
+    $('#crancy-header__nav,.crancy-sidebarmenu__close').on(
+        'click',
+        function () {
+            $('.crancy-sidebarmenu').toggleClass('active');
+        }
+    );
+    /*====================================
 			Select2 JS
-		======================================*/ 
-		$('select').niceSelect();
+		======================================*/
+    // $('select').niceSelect();
 });

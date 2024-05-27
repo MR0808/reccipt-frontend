@@ -4,7 +4,7 @@ import slugify from '../middleware/slugify.js';
 
 const Schema = mongoose.Schema;
 
-var ecomTypeSchema = new Schema(
+var merchantTypeSchema = new Schema(
     {
         name: {
             type: String,
@@ -18,9 +18,9 @@ var ecomTypeSchema = new Schema(
     { timestamps: true }
 );
 
-ecomTypeSchema.pre('save', async function (next) {
+merchantTypeSchema.pre('save', async function (next) {
     this.slug = slugify(this.name);
     next();
 });
 
-export default mongoose.model('EcomType', ecomTypeSchema);
+export default mongoose.model('MerchantType', merchantTypeSchema);

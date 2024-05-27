@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-var businessUserSchema = new Schema(
+var merchantUserSchema = new Schema(
     {
         firstName: {
             type: String,
@@ -25,13 +25,13 @@ var businessUserSchema = new Schema(
             type: String,
             enum: ['Admin', 'User']
         },
-        business: {
+        merchant: {
             type: Schema.Types.ObjectId,
             required: true,
-            ref: 'Business'
+            ref: 'Merchant'
         }
     },
     { timestamps: true }
 );
 
-export default mongoose.model('BusinessUser', businessUserSchema);
+export default mongoose.model('MerchantUser', merchantUserSchema);

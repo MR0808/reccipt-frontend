@@ -4,9 +4,9 @@ import genAPIKey from '../util/api.js';
 
 const Schema = mongoose.Schema;
 
-var businessSchema = new Schema(
+var merchantSchema = new Schema(
     {
-        businessName: {
+        merchantName: {
             type: String,
             required: true
         },
@@ -23,12 +23,12 @@ var businessSchema = new Schema(
         primaryContact: {
             type: Schema.Types.ObjectId,
             required: true,
-            ref: 'BusinessUser'
+            ref: 'MerchantUser'
         },
         users: [
             {
                 type: Schema.Types.ObjectId,
-                ref: 'BusinessUser'
+                ref: 'MerchantUser'
             }
         ],
         abn: String,
@@ -39,9 +39,9 @@ var businessSchema = new Schema(
             default: 'Draft'
         },
         categories: {
-            businessType: {
+            merchantType: {
                 type: Schema.Types.ObjectId,
-                ref: 'BusinessType'
+                ref: 'MerchantType'
             },
             eComType: {
                 type: Schema.Types.ObjectId,
@@ -57,4 +57,4 @@ var businessSchema = new Schema(
     { timestamps: true }
 );
 
-export default mongoose.model('Business', businessSchema);
+export default mongoose.model('Merchant', merchantSchema);

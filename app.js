@@ -66,6 +66,9 @@ app.use(
 
 import mainRoutes from './routes/main.js';
 import authRoutes from './routes/auth.js';
+import merchantRoutes from './routes/merchant.js';
+import optionsRoutes from './routes/options.js';
+import configRoutes from './routes/config.js';
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
@@ -110,6 +113,9 @@ app.use((req, res, next) => {
 
 app.use(mainRoutes);
 app.use(authRoutes);
+app.use('/merchants', merchantRoutes);
+app.use('/options', optionsRoutes);
+app.use('/config', configRoutes);
 
 app.get('/500', errorController.get500);
 

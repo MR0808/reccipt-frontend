@@ -9634,7 +9634,11 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 .required::after {
 	content: ' *';
 	color: red;
-  }
+}
+
+.right-align {
+	text-align: right;
+}
 
 /*======================================
 	End Custom CSS
