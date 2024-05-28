@@ -11,6 +11,8 @@ export async function getAddMerchant(req, res, next) {
     const countries = await Country.find().sort('name');
     const defaultCountry = await Country.findOne({ name: 'Australia' });
     const states = await State.find({ country: defaultCountry._id });
+    const ecomTypes = await EcomType.find().sort('name')
+    const merchantTypes = await MerchantType.find().sort('name')
     res.render('merchants/editMerchant', {
         pageTitle: 'Add Merchant',
         path: '/merchant/add-merchant',
@@ -20,6 +22,8 @@ export async function getAddMerchant(req, res, next) {
         validationErrors: [],
         countries: countries,
         defaultCountry: defaultCountry._id,
-        states: states
+        states: states,
+        ecomTypes: ecomTypes,
+        merchantTypes: merchantTypes
     });
 }
