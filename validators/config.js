@@ -9,10 +9,10 @@ export const merchantType = [
         .exists({ checkFalsy: true })
         .withMessage('You must type a merchant type')
         .custom(async (value, { req }) => {
-            const userDoc = await MerchantType.findOne({
+            const merchantDoc = await MerchantType.findOne({
                 slug: slugify(value)
             });
-            if (userDoc) {
+            if (merchantDoc) {
                 return Promise.reject('Merchant type already exists.');
             }
         })
@@ -23,10 +23,10 @@ export const ecomType = [
         .exists({ checkFalsy: true })
         .withMessage('You must type an ecom type')
         .custom(async (value, { req }) => {
-            const userDoc = await EcomType.findOne({
+            const ecomDoc = await EcomType.findOne({
                 slug: slugify(value)
             });
-            if (userDoc) {
+            if (ecomDoc) {
                 return Promise.reject('Ecom type already exists.');
             }
         })

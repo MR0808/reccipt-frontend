@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import * as errorController from './controllers/error.js';
 import AdminUser from './models/adminUser.js';
+import slugify from './middleware/slugify.js';
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
@@ -31,7 +32,8 @@ const fileStorage = multer.diskStorage({
         cb(null, 'images');
     },
     filename: (req, file, cb) => {
-        cb(null, uuidv4() + file.originalname);
+        const extension = file.mimetype.slice(6, file.mimetype.length);
+        cb(null, slugify(req.body.merchantName) + '.' + extension);
     }
 });
 
@@ -50,19 +52,19 @@ const fileFilter = (req, file, cb) => {
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-app.use(
-    helmet.contentSecurityPolicy({
-        useDefaults: true,
-        directives: {
-            'default-src': ["'self'"],
-            'script-src': ["'self'", "'unsafe-inline'", "'unsafe-hashes'"],
-            'script-src': ["'self'", "'unsafe-inline'", 'js.stripe.com'],
-            'style-src': ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
-            'frame-src': ["'self'", 'js.stripe.com'],
-            'font-src': ["'self'", 'fonts.googleapis.com', 'fonts.gstatic.com']
-        }
-    })
-);
+// app.use(
+//     helmet.contentSecurityPolicy({
+//         useDefaults: true,
+//         directives: {
+//             'default-src': ["'self'"],
+//             'script-src': ["'self'", "'unsafe-inline'", "'unsafe-hashes'"],
+//             'script-src': ["'self'", "'unsafe-inline'", 'js.stripe.com'],
+//             'style-src': ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
+//             'frame-src': ["'self'", 'js.stripe.com'],
+//             'font-src': ["'self'", 'fonts.googleapis.com', 'fonts.gstatic.com']
+//         }
+//     })
+// );
 
 import mainRoutes from './routes/main.js';
 import authRoutes from './routes/auth.js';
@@ -75,7 +77,7 @@ app.use(
     multer({
         storage: fileStorage,
         fileFilter: fileFilter
-    }).single('image')
+    }).single('logo')
 );
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));

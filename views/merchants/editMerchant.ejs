@@ -24,47 +24,54 @@
 						<!-- Dashboard Inner -->
 						<div class="row">
 							<div class="col-12 mg-top-30">
-								<form action="/merchants/add" method="POST" enctype="multipart/form-data">
+								<form action="/merchants/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" enctype="multipart/form-data">
 									<div class="row">
 										<div class="col-12">
 											<div class="crancy__item-group mg-top-30">
 												<h4 class="crancy__item-group__title">Merchant Details</h4>
+												<% if (hasError) { %>
+													<div class="crancy-table__status crancy-table__status--cancel mg-top-20">
+														<% for (let error of errorMessage) { %>
+															<%= error.msg %><br>
+														<% } %>
+													</div>
+												<% } %>
 												<div class="crancy__item-form--group">
 													<div class="row">
 														<div class="col-lg-6 col-12">
 															<div class="crancy__item-form--group mg-top-form-20">
 																<label class="crancy__item-label required">Merchant Name</label>
-																<input class="crancy__item-input" type="text" name="merchantName" id="merchantName">
+																<input class="crancy__item-input" type="text" name="merchantName" id="merchantName" value="<% if (editing || hasError) { %><%= merchant.merchantName %><% } %>">
 															</div>
 														</div>
 														<div class="col-lg-6 col-12">
 															<div class="crancy__item-form--group mg-top-form-20">
 																<label class="crancy__item-label">Trading Name </label>
-																<input class="crancy__item-input" type="text" name="tradingName" id="tradingName">
+																<input class="crancy__item-input" type="text" name="tradingName" id="tradingName" value="<% if (editing || hasError) { %><%= merchant.tradingName %><% } %>">
 															</div>
 														</div>
 													</div>
 												</div>
 												<div class="crancy__item-form--group mg-top-form-20">
 													<label class="crancy__item-label required">Invoice/Contact Email Address</label>
-													<input class="crancy__item-input" type="email" name="genericEmail" id="genericEmail">
+													<input class="crancy__item-input" type="email" name="genericEmail" id="genericEmail" value="<% if (editing || hasError) { %><%= merchant.genericEmail %><% } %>">
 												</div>
 												<div class="crancy__item-form--group mg-top-form-20">
 													<label class="crancy__item-label required">Phone Number</label>
-													<input class="crancy__item-input" type="text" name="phoneNumber" id="phoneNumber">
+													<input class="crancy__item-input" type="text" name="phoneNumber" id="phoneNumber" value="<% if (editing || hasError) { %><%= merchant.phoneNumber %><% } %>">
 												</div>
 												<div class="crancy__item-form--group">
 													<div class="row">
 														<div class="col-lg-6 col-12">
 															<div class="crancy__item-form--group mg-top-form-20">
 																<label class="crancy__item-label required">Address Line 1</label>
-																<input class="crancy__item-input" type="text" name="address1" id="address1">
+																<input class="crancy__item-input" type="text" name="address1" id="address1" value="<% if (editing || hasError) { %><%= merchant.address1 %><% } %>">
 															</div>
 														</div>
 														<div class="col-lg-6 col-12">
 															<div class="crancy__item-form--group mg-top-form-20">
 																<label class="crancy__item-label">Address Line 2</label>
-																<input class="crancy__item-input" type="text" type="text" name="address2" id="address2">
+																<input class="crancy__item-input" type="text" type="text" name="address2" id="address2" value="<% if (editing || hasError) { %><%= merchant.address2 %><% } %>">
 															</div>
 														</div>
 													</div>
@@ -74,13 +81,13 @@
 														<div class="col-lg-6 col-12">
 															<div class="crancy__item-form--group mg-top-form-20">
 																<label class="crancy__item-label required">Suburb</label>
-																<input class="crancy__item-input" type="text" name="suburb" id="suburb">
+																<input class="crancy__item-input" type="text" name="suburb" id="suburb" value="<% if (editing || hasError) { %><%= merchant.suburb %><% } %>">
 															</div>
 														</div>
 														<div class="col-lg-6 col-12">
 															<div class="crancy__item-form--group mg-top-form-20">
 																<label class="crancy__item-label required">Postcode</label>
-																<input class="crancy__item-input" type="text" name="postcode" id="postcode">
+																<input class="crancy__item-input" type="text" name="postcode" id="postcode" value="<% if (editing || hasError) { %><%= merchant.postcode %><% } %>">
 															</div>
 														</div>
 													</div>
@@ -92,7 +99,7 @@
 																<label class="crancy__item-label required">Country</label>
 																<select class="form-select crancy__item-input country-select" name="country" id="country">
 																	<% for (let country of countries) { %>
-																		<option value="<%= country._id %>" <% if (country._id.toString() === defaultCountry.toString()) { %>
+																		<option value="<%= country._id %>" <% if (country._id.toString() === merchant.country) { %>
 																			 selected 
 																			 <% } %>><%= country.name %> </option>
 																	<% } %>
@@ -104,7 +111,9 @@
 																<label class="crancy__item-label required">State </label>
 																<select class="form-select crancy__item-input" name="state" id="state">
 																	<% for (let state of states) { %>
-																		<option value="<%= state._id %>"><%= state.name %> </option>
+																		<option value="<%= state._id %>" <% if ((editing || hasError) && state._id.toString() === merchant.state) { %>
+																			selected
+																		<% } %>><%= state.name %> </option>
 																	<% } %>
 																</select>
 															</div>
@@ -116,13 +125,13 @@
 														<div class="col-lg-6 col-12">
 															<div class="crancy__item-form--group mg-top-form-20">
 																<label class="crancy__item-label required">ABN</label>
-																<input class="crancy__item-input" type="text" name="abn" id="abn">
+																<input class="crancy__item-input" type="text" name="abn" id="abn" value="<% if (editing || hasError) { %><%= merchant.abn %><% } %>">
 															</div>
 														</div>
 														<div class="col-lg-6 col-12">
 															<div class="crancy__item-form--group mg-top-form-20">
 																<label class="crancy__item-label required">ACN</label>
-																<input class="crancy__item-input" type="text" name="ACN" id="ACN">
+																<input class="crancy__item-input" type="text" name="acn" id="acn" value="<% if (editing || hasError) { %><%= merchant.acn %><% } %>">
 															</div>
 														</div>
 													</div>
@@ -141,8 +150,10 @@
 																<div class="crancy__item-form--group mg-top-form-20">
 																	<label class="crancy__item-label required">Merchant Category</label>
 																	<select class="form-select crancy__item-input" name="merchantType" id="merchantType">
-																		<% for (let merchantType of merchantTypes { %>
-																			<option value="<%= merchantType._id %>"><%= merchantType.name %> </option>
+																		<% for (let merchantType of merchantTypes) { %>
+																			<option value="<%= merchantType._id %>" <% if ((editing || hasError) && merchantType._id.toString() === merchant.merchantType) { %>
+																				selected
+																			<% } %>><%= merchantType.name %> </option>
 																		<% } %>
 																	</select>
 																</div>
@@ -151,8 +162,10 @@
 																<div class="crancy__item-form--group mg-top-form-20">
 																	<label class="crancy__item-label required">eCom Type </label>
 																	<select class="form-select crancy__item-input" name="eComType" id="eComType">
-																		<% for (let ecomhantType of ecomhantTypes { %>
-																			<option value="<%= ecomhantType._id %>"><%= ecomhantType.name %> </option>
+																		<% for (let ecomType of ecomTypes) { %>
+																			<option value="<%= ecomType._id %>" <% if ((editing || hasError) && ecomType._id.toString() === merchant.ecomType) { %>
+																				selected
+																			<% } %>><%= ecomType.name %> </option>
 																		<% } %>
 																	</select>
 																</div>
@@ -171,7 +184,7 @@
 													</div>
 													<div class="crancy-ptabs__sauthor">
 														<div class="crancy-ptabs__sauthor-img crancy-ptabs__pthumb">
-															<img src="/img/logoplaceholder.png" alt="#">
+															<img src="/img/logoplaceholder.png" alt="#" id="logoPreview">
 															<label class="crancy-ptabs__sedit" for="file-input">
 																<span>
 																	<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -182,7 +195,7 @@
 																	</svg>
 																</span>
 															</label>
-															<input id="file-input" type="file">
+															<input id="file-input" type="file" name="logo">
 														</div>
 													</div>
 												</div>
@@ -198,24 +211,24 @@
 														<div class="col-lg-6 col-12">
 															<div class="crancy__item-form--group mg-top-form-20">
 																<label class="crancy__item-label required">First Name</label>
-																<input class="crancy__item-input" type="text" name="firstName" id="firstName">
+																<input class="crancy__item-input" type="text" name="firstName" id="firstName" value="<% if (editing || hasError) { %><%= merchant.primaryContact.firstName %><% } %>">
 															</div>
 														</div>
 														<div class="col-lg-6 col-12">
 															<div class="crancy__item-form--group mg-top-form-20">
 																<label class="crancy__item-label required">Last Name</label>
-																<input class="crancy__item-input" type="text" name="lastName" id="lastName">
+																<input class="crancy__item-input" type="text" name="lastName" id="lastName" value="<% if (editing || hasError) { %><%= merchant.primaryContact.lastName %><% } %>">
 															</div>
 														</div>
 													</div>
 												</div>
 												<div class="crancy__item-form--group mg-top-form-20">
 													<label class="crancy__item-label required">Email Address</label>
-													<input class="crancy__item-input" type="email" name="userEmail" id="userEmail">
+													<input class="crancy__item-input" type="email" name="userEmail" id="userEmail" value="<% if (editing || hasError) { %><%= merchant.primaryContact.email %><% } %>">
 												</div>
 												<div class="crancy__item-form--group mg-top-form-20">
 													<label class="crancy__item-label required">Phone Number</label>
-													<input class="crancy__item-input" type="text" name="userPhoneNumber" id="userPhoneNumber">
+													<input class="crancy__item-input" type="text" name="userPhoneNumber" id="userPhoneNumber" value="<% if (editing || hasError) { %><%= merchant.primaryContact.phoneNumber %><% } %>">
 												</div>
 												<div class="crancy__item-form--group  mg-top-form-20">
 												</div>
@@ -244,6 +257,7 @@
 
     <%- include('../includes/end.ejs') %>
 	<script src="/js/state.js"></script>
+	<script src="/js/image.js"></script>
 
 </body>
 

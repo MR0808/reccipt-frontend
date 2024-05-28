@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 import genAPIKey from '../util/api.js';
+import slugify from '../middleware/slugify.js';
 
 const Schema = mongoose.Schema;
 
@@ -52,9 +53,18 @@ var merchantSchema = new Schema(
             type: String,
             required: true,
             default: genAPIKey()
+        },
+        slug: {
+            type: String,
+            index: true
         }
     },
     { timestamps: true }
 );
+
+merchantSchema.pre('save', async function (next) {
+    this.slug = slugify(this.merchantName);
+    next();
+});
 
 export default mongoose.model('Merchant', merchantSchema);
