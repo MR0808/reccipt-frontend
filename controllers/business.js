@@ -1,5 +1,4 @@
 import { validationResult } from 'express-validator';
-import crypto from 'crypto';
 
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
@@ -12,6 +11,54 @@ import EcomType from '../models/ecomType.js';
 import Country from '../models/country.js';
 import State from '../models/state.js';
 import genAPIKey from '../util/api.js';
+import generatePassword from '../util/password.js';
+
+export async function getBusinesses(req, res, next) {
+    const itemsPerPage = req.session.itemsPerPage || 10;
+    const page = +req.query.page || 1;
+
+    try {
+        let totalItems = await Business.find().countDocuments();
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        let lowerPage = page - 4; //5
+        if (lowerPage < 1) lowerPage = 1; //no
+        let upperPage = lowerPage + 9; //14
+        if (upperPage > totalPages) upperPage = totalPages; //13
+        if (lowerPage < upperPage - 9) lowerPage = 1;
+        if (upperPage === totalPages && totalPages > 9) {
+            lowerPage = upperPage - 9;
+        }
+        const businesses = await Business.find({})
+            .sort('name')
+            .skip((page - 1) * itemsPerPage)
+            .limit(itemsPerPage)
+            .populate('state')
+            .populate('country');
+        res.render('businesses/businesses', {
+            pageTitle: 'Businesses',
+            path: '/business/businesses',
+            businesses: businesses,
+            currentPage: page,
+            hasNextPage: itemsPerPage * page < totalItems,
+            hasPreviousPage: page > 1,
+            nextPage: page + 1,
+            previousPage: page - 1,
+            lastPage: totalPages,
+            lowerPage: lowerPage,
+            upperPage: upperPage,
+            results: itemsPerPage
+        });
+    } catch (err) {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    }
+}
+
+export async function setSessionBusinesses(req, res, next) {
+    req.session.itemsPerPage = req.query.results;
+    return res.status(200).json({ data: req.session.itemsPerPage });
+}
 
 export async function getAddBusiness(req, res, next) {
     const countries = await Country.find().sort('name');
@@ -19,7 +66,7 @@ export async function getAddBusiness(req, res, next) {
     const states = await State.find({ country: defaultCountry._id });
     res.render('businesses/editBusiness', {
         pageTitle: 'Add Business',
-        path: '/merchant/add-business',
+        path: '/business/add-business',
         editing: false,
         hasError: false,
         errorMessage: null,
@@ -51,7 +98,7 @@ export async function postAddBusiness(req, res, next) {
         const states = await State.find({ country: businessForm.country });
         return res.status(422).render('businesses/editBusiness', {
             pageTitle: 'Add Business',
-            path: '/merchant/add-business',
+            path: '/business/add-business',
             editing: false,
             hasError: true,
             countries: countries,
@@ -79,15 +126,8 @@ export async function postAddBusiness(req, res, next) {
     });
     try {
         const newBusiness = await business.save();
-        const generatePassword = (
-            length = 20,
-            characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$'
-        ) =>
-            Array.from(crypto.randomFillSync(new Uint32Array(length)))
-                .map((x) => characters[x % characters.length])
-                .join('');
-        const hashedPassword = bcrypt.hash(generatePassword, 12);
-
+        const password = generatePassword();
+        const hashedPassword = await bcrypt.hash(password, 12);
         const primaryContact = new BusinessUser({
             firstName: businessForm.primaryContact.firstName,
             lastName: businessForm.primaryContact.lastName,
@@ -101,13 +141,13 @@ export async function postAddBusiness(req, res, next) {
         });
         const newPrimaryContact = await primaryContact.save();
         const primaryContactObject = {
-            user: newPrimaryContact,
+            user: newPrimaryContact._id,
             access: 'Admin'
         };
         newBusiness.primaryContact = newPrimaryContact;
         newBusiness.users.push(primaryContactObject);
         await newBusiness.save();
-        console.log('all done');
+        res.redirect('/businesses');
     } catch (err) {
         const error = new Error(err);
         error.httpStatusCode = 500;

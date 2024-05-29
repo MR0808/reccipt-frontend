@@ -6,6 +6,10 @@ import * as validators from '../validators/business.js';
 
 const router = express.Router();
 
+router.get('/', isAuth, businessController.getBusinesses);
+
+router.get('/set-session', isAuth, businessController.setSessionBusinesses);
+
 router.get('/add-business', isAuth, businessController.getAddBusiness);
 
 router.post(

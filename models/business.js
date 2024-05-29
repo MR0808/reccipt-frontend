@@ -16,8 +16,14 @@ var businessSchema = new Schema(
         address2: String,
         suburb: String,
         postcode: String,
-        state: String,
-        country: String,
+        state: {
+            type: Schema.Types.ObjectId,
+            ref: 'State'
+        },
+        country: {
+            type: Schema.Types.ObjectId,
+            ref: 'Country'
+        },
         abn: String,
         acn: String,
         primaryContact: {

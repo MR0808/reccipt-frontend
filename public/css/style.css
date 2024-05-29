@@ -9640,6 +9640,21 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 	text-align: right;
 }
 
+.crancy-table__status.crancy-table__status--Active {
+	background: #E8EDFF;
+	color:#0A82FD;
+}
+
+.crancy-table__status.crancy-table__status--Draft {
+	background:#FDF9E9;
+	color:#FACC15;
+}
+
+.crancy-table__status.crancy-table__status--Pending {
+	background: #DFC4F8;
+	color: #9B51E0;
+}
+
 /*======================================
 	End Custom CSS
 ========================================*/

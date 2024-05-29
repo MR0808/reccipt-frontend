@@ -1,0 +1,468 @@
+<%- include('../includes/head.ejs') %>
+<body>
+    <%- include('../includes/navigation.ejs') %>
+
+    <!-- crancy Dashboard -->
+    <section class="crancy-adashboard crancy-show">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mg-top-30">
+                    <!-- BreadCrumb -->
+                    <div class="crancy-pbreadcrumb">
+                        <h4 class="crancy-sidebar__title">Busineses</h4>
+                        <ul class="crancy-pbreadcrumb__list">
+                            <li><a href="/">Home</a></li>
+                            <li class="active"><a href="/businesses">Businesses</a></li>
+                        </ul>
+                    </div>
+                    <!-- End BreadCrumb -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xxl-9 col-12 crancy-main__column">
+                    <div class="crancy-body">
+                        <!-- Dashboard Inner -->
+                        <div class="crancy-dsinner">
+                            <div class="crancy-table crancy-table--v3 mg-top-30">
+                                <div class="crancy-customer-filter">
+                                    <div class="crancy-customer-filter__single crancy-customer-filter__single--csearch">
+                                        <div class="crancy-header__form crancy-header__form--customer">
+                                            <form class="crancy-header__form-inner" action="#">
+                                                <button class="search-btn" type="submit">
+                                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <circle cx="9.78639" cy="9.78614" r="8.23951" stroke="#9AA2B1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
+                                                        <path d="M15.5176 15.9448L18.7479 19.1668" stroke="#9AA2B1" stroke-width="1.5" stroke-linecap="round"stroke-linejoin="round"></path>
+                                                    </svg>
+                                                </button>
+                                                <input name="s" value="" type="text" placeholder="Search by ID, product, or others...">
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="crancy-customer-filter__single">
+                                        <a href="#" class="crancy-customer-filter__single--button">
+                                            <img src="/img/filter-icon3.svg">Filters
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- crancy Table -->
+                                <table id="crancy-table__main" class="crancy-table__main crancy-table__main-v3">
+                                    <!-- crancy Table Head -->
+                                    <thead class="crancy-table__head">
+                                        <tr>
+                                            <th class="crancy-table__column-1 crancy-table__h1">Business Name</th>
+                                            <th class="crancy-table__column-2 crancy-table__h2">Location</th>
+                                            <th class="crancy-table__column-3 crancy-table__h3">Merchants</th>
+                                            <th class="crancy-table__column-4 crancy-table__h4">Transactions (<%= new Date().getFullYear() %>)</th>
+                                            <th class="crancy-table__column-5 crancy-table__h5">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <!-- crancy Table Body -->
+                                    <tbody class="crancy-table__body">
+                                        <% 
+                                            for (let business of businesses) { 
+                                        %>
+                                        <tr>
+                                            <td class="crancy-table__column-1 crancy-table__data-1">
+                                                <h4 class="crancy-table__product-title"><%= business.name %></h4>
+                                            </td>
+                                            <td class="crancy-table__column-2 crancy-table__data-2">
+                                                <h4 class="crancy-table__product-title"><%= business.state.isoCode %>, <%= business.country.name %></h4>
+                                            </td>
+                                            <td class="crancy-table__column-3 crancy-table__data-3">
+                                                <h4 class="crancy-table__product-title">3</h4>
+                                            </td>
+                                            <td class="crancy-table__column-3 crancy-table__data-3">
+                                                <h4 class="crancy-table__product-title">3,245,223</h4>
+                                            </td>
+                                            <td class="crancy-table__column-5 crancy-table__data-5">
+                                                <div class="crancy-table__actions crancy-table__actions--between">
+                                                    <div class="crancy-table__status crancy-table__status--<%= business.status %>"><%= business.status %></div>
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                                    </tbody>
+                                    <!-- End crancy Table Body -->
+                                </table>
+                                <!-- End crancy Table -->
+                                <div class="crancy-table-bottom">
+                                    <div class="dataTables_length" id="crancy-table__main_length">
+                                        <label>Show result:
+                                            <select name="crancy-table__main_length" id="showResults" aria-controls="crancy-table__main" class="form-select form-select-sm">
+                                                <option value="10" <% if (results == 10) { %>selected<% } %>>10</option>
+                                                <option value="25" <% if (results == 25) { %>selected<% } %>>25</option>
+                                                <option value="50" <% if (results == 50) { %>selected<% } %>>50</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Dashboard Inner -->
+                    </div>
+                </div>
+
+                <div class="col-xxl-3 col-12 crancy-main__sidebar">
+                    <div class="crancy-sidebar mg-top-30">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-6 col-md-6 col-12 crancy-sidebar__widget">
+                                <!-- crancy Single Sidebar -->
+                                <div class="crancy-sidebar__single">
+                                    <!-- Sidebar Heading -->
+                                    <div class="crancy-sidebar__heading">
+                                        <h4 class="crancy-sidebar__title">Countries</h4>
+                                        <ul class="nav nav-tabs crancy-dropdown__list" id="nav-tab" role="tablist">
+                                            <li class="nav-item dropdown">
+                                                <a class="crancy-sidebar_btn crancy-heading__tabs nav-link dropdown-toggle"
+                                                    data-bs-toggle="dropdown" href="#" role="button"
+                                                    aria-expanded="false">
+                                                    View All
+                                                    <span class="crancy-sidebar__arrow--icon">
+                                                        <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M11.7508 0.247421C11.6711 0.169022 11.5763 0.106794 11.4719 0.0643287C11.3674 0.0218632 11.2554 0 11.1423 0C11.0291 0 10.9171 0.0218632 10.8127 0.0643287C10.7082 0.106794 10.6134 0.169022 10.5338 0.247421L6.6085 4.07837C6.52883 4.15677 6.43404 4.219 6.3296 4.26146C6.22516 4.30393 6.11314 4.32579 6 4.32579C5.88686 4.32579 5.77484 4.30393 5.6704 4.26146C5.56596 4.219 5.47117 4.15677 5.3915 4.07837L1.46623 0.247421C1.38655 0.169022 1.29176 0.106794 1.18732 0.0643287C1.08289 0.0218632 0.970865 0 0.857725 0C0.744585 0 0.632564 0.0218632 0.528125 0.0643287C0.423686 0.106794 0.328896 0.169022 0.249222 0.247421C0.0895969 0.404141 0 0.616141 0 0.837119C0 1.0581 0.0895969 1.2701 0.249222 1.42682L4.18306 5.26613C4.66515 5.73605 5.31865 6 6 6C6.68135 6 7.33485 5.73605 7.81694 5.26613L11.7508 1.42682C11.9104 1.2701 12 1.0581 12 0.837119C12 0.616141 11.9104 0.404141 11.7508 0.247421Z">
+                                                            </path>
+                                                        </svg>
+                                                    </span>
+                                                </a>
+                                                <ul class="dropdown-menu crancy-sidebar_dropdown">
+                                                    <a class="list-group-item" data-bs-toggle="tab"
+                                                        data-bs-target="#seller_tab-1" role="tab">Last 7 Days</a>
+                                                    <a class="list-group-item" data-bs-toggle="tab"
+                                                        data-bs-target="#seller_tab-2" role="tab">Last 15 Days</a>
+                                                    <a class="list-group-item" data-bs-toggle="tab"
+                                                        data-bs-target="#seller_tab-1" role="tab">Last 30 Days</a>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- Sidebar Creator Lists -->
+                                    <div class="crancy-sidebar__creators">
+                                        <div class="tab-content" id="nav-tabContent">
+                                            <!-- Single Tab -->
+                                            <div class="tab-pane fade show active" id="seller_tab-1" role="tabpanel"
+                                                aria-labelledby="nav-home-tab">
+                                                <ul class="crancy-sidebar__creatorlist">
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/country-1.png" alt="#">
+                                                            <a href="#">
+                                                                <span
+                                                                    class="crancy-sidebar__creator-link">Afghanistan</span>
+                                                                <b class="crancy-sidebar__creator-name">$7.34k</b>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/country-5.png" alt="#">
+                                                            <a href="#">
+                                                                <span class="crancy-sidebar__creator-link">Saudi
+                                                                    Arabia</span>
+                                                                <b class="crancy-sidebar__creator-name">$5.34k</b>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/country-2.png" alt="#">
+                                                            <a href="#">
+                                                                <span
+                                                                    class="crancy-sidebar__creator-link">Bangladesh</span>
+                                                                <b class="crancy-sidebar__creator-name">$3.34k</b>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/country-4.png" alt="#">
+                                                            <a href="#">
+                                                                <span class="crancy-sidebar__creator-link">United
+                                                                    States</span>
+                                                                <b class="crancy-sidebar__creator-name">$3.34k</b>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/country-5.png" alt="#">
+                                                            <a href="#">
+                                                                <span
+                                                                    class="crancy-sidebar__creator-link">Ireland</span>
+                                                                <b class="crancy-sidebar__creator-name">$8.34k</b>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!-- Single Tab -->
+                                            <div class="tab-pane fade" id="seller_tab-2" role="tabpanel"
+                                                aria-labelledby="nav-profile-tab">
+                                                <ul class="crancy-sidebar__creatorlist">
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/country-5.png" alt="#">
+                                                            <a href="#">
+                                                                <span
+                                                                    class="crancy-sidebar__creator-link">Ireland</span>
+                                                                <b class="crancy-sidebar__creator-name">$8.34k</b>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/country-1.png" alt="#">
+                                                            <a href="#">
+                                                                <span
+                                                                    class="crancy-sidebar__creator-link">Afghanistan</span>
+                                                                <b class="crancy-sidebar__creator-name">$7.34k</b>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/country-5.png" alt="#">
+                                                            <a href="#">
+                                                                <span class="crancy-sidebar__creator-link">Saudi
+                                                                    Arabia</span>
+                                                                <b class="crancy-sidebar__creator-name">$5.34k</b>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/country-2.png" alt="#">
+                                                            <a href="#">
+                                                                <span
+                                                                    class="crancy-sidebar__creator-link">Bangladesh</span>
+                                                                <b class="crancy-sidebar__creator-name">$3.34k</b>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/country-4.png" alt="#">
+                                                            <a href="#">
+                                                                <span class="crancy-sidebar__creator-link">United
+                                                                    States</span>
+                                                                <b class="crancy-sidebar__creator-name">$3.34k</b>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Sidebar Creator Lists -->
+                                </div>
+                                <!-- End crancy Single Sidebar -->
+                            </div>
+
+                            <div class="col-xl-12 col-lg-6 col-md-6 col-12 crancy-sidebar__widget">
+                                <!-- crancy Single Sidebar -->
+                                <div class="crancy-sidebar__single">
+                                    <div id="crancy-calender" class="crancy-default-cd"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-12 col-lg-6 col-md-6 col-12 crancy-sidebar__widget">
+                                <!-- crancy Single Sidebar -->
+                                <div class="crancy-sidebar__single">
+                                    <!-- Sidebar Heading -->
+                                    <div class="crancy-sidebar__heading">
+                                        <h4 class="crancy-sidebar__title">Top Seller</h4>
+                                        <ul class="nav nav-tabs crancy-dropdown__list" id="nav-tab" role="tablist">
+                                            <li class="nav-item dropdown">
+                                                <a class="crancy-sidebar_btn crancy-heading__tabs nav-link dropdown-toggle"
+                                                    data-bs-toggle="dropdown" href="#" role="button"
+                                                    aria-expanded="false">
+                                                    View All
+                                                    <span class="crancy-sidebar__arrow--icon">
+                                                        <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M11.7508 0.247421C11.6711 0.169022 11.5763 0.106794 11.4719 0.0643287C11.3674 0.0218632 11.2554 0 11.1423 0C11.0291 0 10.9171 0.0218632 10.8127 0.0643287C10.7082 0.106794 10.6134 0.169022 10.5338 0.247421L6.6085 4.07837C6.52883 4.15677 6.43404 4.219 6.3296 4.26146C6.22516 4.30393 6.11314 4.32579 6 4.32579C5.88686 4.32579 5.77484 4.30393 5.6704 4.26146C5.56596 4.219 5.47117 4.15677 5.3915 4.07837L1.46623 0.247421C1.38655 0.169022 1.29176 0.106794 1.18732 0.0643287C1.08289 0.0218632 0.970865 0 0.857725 0C0.744585 0 0.632564 0.0218632 0.528125 0.0643287C0.423686 0.106794 0.328896 0.169022 0.249222 0.247421C0.0895969 0.404141 0 0.616141 0 0.837119C0 1.0581 0.0895969 1.2701 0.249222 1.42682L4.18306 5.26613C4.66515 5.73605 5.31865 6 6 6C6.68135 6 7.33485 5.73605 7.81694 5.26613L11.7508 1.42682C11.9104 1.2701 12 1.0581 12 0.837119C12 0.616141 11.9104 0.404141 11.7508 0.247421Z">
+                                                            </path>
+                                                        </svg>
+                                                    </span>
+                                                </a>
+                                                <ul class="dropdown-menu crancy-sidebar_dropdown">
+                                                    <a class="list-group-item" data-bs-toggle="tab"
+                                                        data-bs-target="#seller_tab-3" role="tab">Last 7 Days</a>
+                                                    <a class="list-group-item" data-bs-toggle="tab"
+                                                        data-bs-target="#seller_tab-4" role="tab">Last 15 Days</a>
+                                                    <a class="list-group-item" data-bs-toggle="tab"
+                                                        data-bs-target="#seller_tab-3" role="tab">Last 30 Days</a>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- Sidebar Creator Lists -->
+                                    <div class="crancy-sidebar__creators">
+                                        <div class="tab-content" id="nav-tabContent">
+                                            <!-- Single Tab -->
+                                            <div class="tab-pane fade show active" id="seller_tab-3" role="tabpanel"
+                                                aria-labelledby="nav-home-tab">
+                                                <ul
+                                                    class="crancy-sidebar__creatorlist crancy-sidebar__creatorlist--sellers">
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/seller-1.png" alt="#">
+                                                            <a href="#">
+                                                                <b class="crancy-sidebar__creator-name">Eleanor
+                                                                    Pena</b>
+                                                                <span
+                                                                    class="crancy-sidebar__creator-badge crancy-color1">13k</span>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/seller-2.png" alt="#">
+                                                            <a href="#">
+                                                                <b class="crancy-sidebar__creator-name">Kathryn
+                                                                    Murphy</b>
+                                                                <span
+                                                                    class="crancy-sidebar__creator-badge crancy-color1">20K</span>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/seller-3.png" alt="#">
+                                                            <a href="#">
+                                                                <b class="crancy-sidebar__creator-name">Cody
+                                                                    Fisher</b>
+                                                                <span
+                                                                    class="crancy-sidebar__creator-badge crancy-color1">33K</span>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/seller-4.png" alt="#">
+                                                            <a href="#">
+                                                                <b class="crancy-sidebar__creator-name">Darlene
+                                                                    Robertson</b>
+                                                                <span
+                                                                    class="crancy-sidebar__creator-badge crancy-color1">10K</span>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/seller-5.png" alt="#">
+                                                            <a href="#">
+                                                                <b class="crancy-sidebar__creator-name">Ronald
+                                                                    Richards</b>
+                                                                <span
+                                                                    class="crancy-sidebar__creator-badge crancy-color1">35K</span>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!-- Single Tab -->
+                                            <div class="tab-pane fade" id="seller_tab-4" role="tabpanel"
+                                                aria-labelledby="nav-profile-tab">
+                                                <ul
+                                                    class="crancy-sidebar__creatorlist crancy-sidebar__creatorlist--sellers">
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/seller-1.png" alt="#">
+                                                            <a href="#">
+                                                                <b class="crancy-sidebar__creator-name">Eleanor
+                                                                    Pena</b>
+                                                                <span
+                                                                    class="crancy-sidebar__creator-badge crancy-color1">13k</span>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/seller-2.png" alt="#">
+                                                            <a href="#">
+                                                                <b class="crancy-sidebar__creator-name">Kathryn
+                                                                    Murphy</b>
+                                                                <span
+                                                                    class="crancy-sidebar__creator-badge crancy-color1">20K</span>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/seller-3.png" alt="#">
+                                                            <a href="#">
+                                                                <b class="crancy-sidebar__creator-name">Cody
+                                                                    Fisher</b>
+                                                                <span
+                                                                    class="crancy-sidebar__creator-badge crancy-color1">33K</span>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/seller-4.png" alt="#">
+                                                            <a href="#">
+                                                                <b class="crancy-sidebar__creator-name">Darlene
+                                                                    Robertson</b>
+                                                                <span
+                                                                    class="crancy-sidebar__creator-badge crancy-color1">10K</span>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="crancy-sidebar__creator">
+                                                            <img src="img/seller-5.png" alt="#">
+                                                            <a href="#">
+                                                                <b class="crancy-sidebar__creator-name">Ronald
+                                                                    Richards</b>
+                                                                <span
+                                                                    class="crancy-sidebar__creator-badge crancy-color1">35K</span>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Sidebar Creator Lists -->
+                                </div>
+                                <!-- End crancy Single Sidebar -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End crancy Dashboard -->
+	</div>
+
+    <%- include('../includes/end.ejs') %>
+    <script>
+    document
+        .getElementById('showResults')
+        .addEventListener('change', async function (event) {
+            setSession(event);
+        });
+
+    async function setSession(event) {
+        console.log('here')
+        try {
+            const result = await fetch('/businesses/set-session?results=' + event.target.value);
+            const jsonStates = await result.json();
+            const states = jsonStates.data;
+            window.location.href = window.location.pathname+"?"+$.param({'page':'1'});
+        } catch (e) {
+            alert(e);
+            throw new Error(e);
+        }
+    }
+
+    </script>
+    
+</body>
+
+</html>
