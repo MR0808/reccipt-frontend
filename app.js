@@ -68,8 +68,7 @@ app.set('views', 'views');
 
 import mainRoutes from './routes/main.js';
 import authRoutes from './routes/auth.js';
-import merchantRoutes from './routes/merchant.js';
-import optionsRoutes from './routes/options.js';
+import businessRoutes from './routes/business.js';
 import configRoutes from './routes/config.js';
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -92,6 +91,18 @@ app.use(
 app.use(flash());
 
 app.use((req, res, next) => {
+    ['log', 'warn'].forEach(function (method) {
+        var old = console[method];
+        console[method] = function () {
+            var stack = new Error().stack.split(/\n/);
+            // Chrome includes a single "Error" line, FF doesn't.
+            if (stack[0].indexOf('Error') === 0) {
+                stack = stack.slice(1);
+            }
+            var args = [].slice.apply(arguments).concat([stack[1].trim()]);
+            return old.apply(console, args);
+        };
+    });
     res.locals.isAuthenticated = req.session.isLoggedIn;
     next();
 });
@@ -115,8 +126,7 @@ app.use((req, res, next) => {
 
 app.use(mainRoutes);
 app.use(authRoutes);
-app.use('/merchants', merchantRoutes);
-app.use('/options', optionsRoutes);
+app.use('/businesses', businessRoutes);
 app.use('/config', configRoutes);
 
 app.get('/500', errorController.get500);

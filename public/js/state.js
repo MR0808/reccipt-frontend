@@ -5,11 +5,10 @@ document
     });
 
 async function getStates(event) {
-    let finalStates;
     let jsonStates;
     try {
         const returnedStates = await fetch(
-            '/options/getStates?country=' + event.target.value
+            '/config/getStates?country=' + event.target.value
         );
         jsonStates = await returnedStates.json();
         states = jsonStates.data;

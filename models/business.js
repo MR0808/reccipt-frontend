@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-import genAPIKey from '../util/api.js';
 import slugify from '../middleware/slugify.js';
 
 const Schema = mongoose.Schema;
@@ -23,7 +22,6 @@ var businessSchema = new Schema(
         acn: String,
         primaryContact: {
             type: Schema.Types.ObjectId,
-            required: true,
             ref: 'BusinessUser'
         },
         users: [
@@ -51,8 +49,7 @@ var businessSchema = new Schema(
         },
         apiKey: {
             type: String,
-            required: true,
-            default: genAPIKey()
+            required: true
         },
         slug: {
             type: String,

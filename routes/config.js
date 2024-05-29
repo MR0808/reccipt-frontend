@@ -6,6 +6,8 @@ import isAuth from '../middleware/is-auth.js';
 
 const router = express.Router();
 
+router.get('/getStates', configController.getStates);
+
 router.get('/merchanttype', isAuth, configController.getMerchantType);
 
 router.post(

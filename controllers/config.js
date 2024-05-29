@@ -2,7 +2,14 @@ import { validationResult } from 'express-validator';
 
 import MerchantType from '../models/merchantType.js';
 import EcomType from '../models/ecomType.js';
+import Country from '../models/country.js';
+import State from '../models/state.js';
 import titleCase from '../util/titlecase.js';
+
+export async function getStates(req, res, next) {
+    const states = await State.find({ country: req.query.country });
+    return res.status(200).json({ data: states });
+}
 
 export async function getMerchantType(req, res, next) {
     try {
