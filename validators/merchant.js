@@ -1,7 +1,7 @@
 import { body, param } from 'express-validator';
 
 import Merchant from '../models/merchant.js';
-import MerchantUser from '../models/merchantUser.js';
+import BusinessUser from '../models/businessUser.js';
 import slugify from '../middleware/slugify.js';
 
 export const merchantValidation = [

@@ -3,13 +3,13 @@ import crypto from 'crypto';
 
 import bcrypt from 'bcryptjs';
 
+import Business from '../models/business.js';
 import Merchant from '../models/merchant.js';
-import MerchantUser from '../models/merchantUser.js';
+import BusinessUser from '../models/businessUser.js';
 import MerchantType from '../models/merchantType.js';
 import EcomType from '../models/ecomType.js';
 import Country from '../models/country.js';
 import State from '../models/state.js';
-import merchantUser from '../models/merchantUser.js';
 
 export async function getAddMerchant(req, res, next) {
     const countries = await Country.find().sort('name');

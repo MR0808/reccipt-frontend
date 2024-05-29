@@ -5,12 +5,14 @@ import slugify from '../middleware/slugify.js';
 
 const Schema = mongoose.Schema;
 
-var merchantSchema = new Schema(
+var businessSchema = new Schema(
     {
-        merchantName: {
+        name: {
             type: String,
             required: true
         },
+        phoneNumber: String,
+        genericEmail: String,
         address1: String,
         address2: String,
         suburb: String,
@@ -19,7 +21,6 @@ var merchantSchema = new Schema(
         country: String,
         abn: String,
         acn: String,
-        logoUrl: String,
         primaryContact: {
             type: Schema.Types.ObjectId,
             required: true,
@@ -33,28 +34,20 @@ var merchantSchema = new Schema(
                 },
                 access: {
                     type: String,
-                    enum: ['Admin', 'User']
+                    enum: ['Admin', 'User', 'Child']
                 }
             }
         ],
-        business: {
-            type: Schema.Types.ObjectId,
-            ref: 'Business'
-        },
+        merchants: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Merchant'
+            }
+        ],
         status: {
             type: String,
             enum: ['Draft', 'Pending', 'Active'],
             default: 'Draft'
-        },
-        categories: {
-            merchantType: {
-                type: Schema.Types.ObjectId,
-                ref: 'MerchantType'
-            },
-            eComType: {
-                type: Schema.Types.ObjectId,
-                ref: 'eComType'
-            }
         },
         apiKey: {
             type: String,
@@ -69,9 +62,9 @@ var merchantSchema = new Schema(
     { timestamps: true }
 );
 
-merchantSchema.pre('save', async function (next) {
-    this.slug = slugify(this.merchantName);
+businessSchema.pre('save', async function (next) {
+    this.slug = slugify(this.name);
     next();
 });
 
-export default mongoose.model('Merchant', merchantSchema);
+export default mongoose.model('Business', businessSchema);
