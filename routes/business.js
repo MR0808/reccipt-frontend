@@ -15,8 +15,23 @@ router.get('/add-business', isAuth, businessController.getAddBusiness);
 router.post(
     '/add-business',
     isAuth,
-    ...validators.businessValidation,
+    ...validators.businessValidationAdd,
     businessController.postAddBusiness
+);
+
+router.get('/business/:slug', isAuth, businessController.getBusiness);
+
+router.get(
+    '/edit-business/:businessId',
+    isAuth,
+    businessController.getEditBusiness
+);
+
+router.post(
+    '/edit-business',
+    isAuth,
+    ...validators.businessValidationEdit,
+    businessController.postEditBusiness
 );
 
 export default router;

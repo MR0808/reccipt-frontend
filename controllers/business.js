@@ -34,7 +34,7 @@ export async function getBusinesses(req, res, next) {
             .limit(itemsPerPage)
             .populate('state')
             .populate('country');
-        res.render('businesses/businesses', {
+        res.render('businesses/business-list', {
             pageTitle: 'Businesses',
             path: '/business/businesses',
             businesses: businesses,
@@ -60,11 +60,39 @@ export async function setSessionBusinesses(req, res, next) {
     return res.status(200).json({ data: req.session.itemsPerPage });
 }
 
+export async function getBusiness(req, res, next) {
+    const businessSlug = req.params.slug;
+    try {
+        const business = await Business.findOne({ slug: businessSlug })
+            .populate('primaryContact')
+            .populate('users')
+            .populate('state')
+            .populate('country');
+        res.render('businesses/business-view', {
+            pageTitle: business.name,
+            path: '/business/business',
+            business: business
+        });
+    } catch (err) {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    }
+}
+
 export async function getAddBusiness(req, res, next) {
-    const countries = await Country.find().sort('name');
-    const defaultCountry = await Country.findOne({ name: 'Australia' });
-    const states = await State.find({ country: defaultCountry._id });
-    res.render('businesses/editBusiness', {
+    try {
+        const countries = await Country.find().sort('name');
+        const defaultCountry = await Country.findOne({ name: 'Australia' });
+        const states = await State.find({ country: defaultCountry._id }).sort(
+            'name'
+        );
+    } catch (err) {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    }
+    res.render('businesses/business-edit', {
         pageTitle: 'Add Business',
         path: '/business/add-business',
         editing: false,
@@ -94,18 +122,26 @@ export async function postAddBusiness(req, res, next) {
     const logo = req.file;
     errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const countries = await Country.find().sort('name');
-        const states = await State.find({ country: businessForm.country });
-        return res.status(422).render('businesses/editBusiness', {
-            pageTitle: 'Add Business',
-            path: '/business/add-business',
-            editing: false,
-            hasError: true,
-            countries: countries,
-            states: states,
-            business: businessForm,
-            validationErrors: errors.array()
-        });
+        try {
+            const countries = await Country.find().sort('name');
+            const states = await State.find({
+                country: businessForm.country
+            }).sort('name');
+            return res.status(422).render('businesses/business-edit', {
+                pageTitle: 'Add Business',
+                path: '/business/add-business',
+                editing: false,
+                hasError: true,
+                countries: countries,
+                states: states,
+                business: businessForm,
+                validationErrors: errors.array()
+            });
+        } catch (err) {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        }
     }
     const apiKey = genAPIKey();
     const business = new Business({
@@ -131,7 +167,7 @@ export async function postAddBusiness(req, res, next) {
         const primaryContact = new BusinessUser({
             firstName: businessForm.primaryContact.firstName,
             lastName: businessForm.primaryContact.lastName,
-            phoneNumber: businessForm.primaryContact.email,
+            phoneNumber: businessForm.primaryContact.phoneNumber,
             email: businessForm.primaryContact.email,
             password: hashedPassword,
             business: {
@@ -148,6 +184,82 @@ export async function postAddBusiness(req, res, next) {
         newBusiness.users.push(primaryContactObject);
         await newBusiness.save();
         res.redirect('/businesses');
+    } catch (err) {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    }
+}
+
+export async function getEditBusiness(req, res, next) {
+    const businessId = req.params.businessId;
+    try {
+        const business = await Business.findById(businessId).populate(
+            'primaryContact'
+        );
+        if (!business) {
+            return res.redirect('/');
+        }
+        const countries = await Country.find().sort('name');
+        const states = await State.find({ country: business.country });
+        res.render('businesses/business-edit', {
+            pageTitle: 'Edit Business',
+            path: '/business/edit-business',
+            editing: true,
+            hasError: false,
+            errorMessage: null,
+            validationErrors: [],
+            countries: countries,
+            states: states,
+            business: business
+        });
+    } catch (err) {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    }
+}
+
+export async function postEditBusiness(req, res, next) {
+    const businessId = req.body.businessId;
+    let businessForm = req.body;
+    businessForm = { ...businessForm, _id: businessId };
+    const errors = validationResult(req);
+    try {
+        if (!errors.isEmpty()) {
+            const countries = await Country.find().sort('name');
+            const states = await State.find({
+                country: businessForm.country
+            }).sort('name');
+            return res.status(422).render('businesses/business-edit', {
+                pageTitle: 'Edit Business',
+                path: '/business/edit-business',
+                editing: true,
+                hasError: true,
+                countries: countries,
+                states: states,
+                business: businessForm,
+                validationErrors: errors.array()
+            });
+        }
+        const business = await Business.findById(businessId);
+        business.name = businessForm.name;
+        business.phoneNumber = businessForm.phoneNumber;
+        business.genericEmail = businessForm.genericEmail;
+        business.address1 = businessForm.address1;
+        business.address2 = businessForm.address2;
+        business.suburb = businessForm.suburb;
+        business.postcode = businessForm.postcode;
+        business.state = mongoose.Types.ObjectId.createFromHexString(
+            businessForm.state
+        );
+        business.country = mongoose.Types.ObjectId.createFromHexString(
+            businessForm.country
+        );
+        business.abn = businessForm.abn;
+        business.acn = businessForm.acn;
+        await business.save();
+        res.redirect('/businesses/business/' + business.slug);
     } catch (err) {
         const error = new Error(err);
         error.httpStatusCode = 500;
