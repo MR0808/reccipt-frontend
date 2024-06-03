@@ -15,8 +15,14 @@ var merchantSchema = new Schema(
         address2: String,
         suburb: String,
         postcode: String,
-        state: String,
-        country: String,
+        state: {
+            type: Schema.Types.ObjectId,
+            ref: 'State'
+        },
+        country: {
+            type: Schema.Types.ObjectId,
+            ref: 'Country'
+        },
         abn: String,
         acn: String,
         logoUrl: String,
@@ -50,9 +56,9 @@ var merchantSchema = new Schema(
                 type: Schema.Types.ObjectId,
                 ref: 'MerchantType'
             },
-            eComType: {
+            ecomType: {
                 type: Schema.Types.ObjectId,
-                ref: 'eComType'
+                ref: 'EcomType'
             }
         },
         apiKey: String,

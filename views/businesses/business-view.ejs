@@ -504,17 +504,17 @@
                                                                 <!-- crancy Table Body -->
                                                                 <tbody class="crancy-table__body">
                                                                     <% 
-                                                                    for (let merchant of merchants) { 
+                                                                    for (let merchant of business.merchants) { 
                                                                     %>
                                                                         <tr>
                                                                             <td class="crancy-table__column-1 crancy-table__data-1">
-                                                                                <img src="<%= merchant.imageUrl %>" alt="<%= merchant.name %>">
+                                                                                <img src="/<%= merchant.logoUrl %>" alt="<%= merchant.name %>" width="40px" height="40px">
                                                                             </td>
                                                                             <td class="crancy-table__column-2 crancy-table__data-2">
-                                                                                <h4 class="crancy-table__product-title"><%= merchant.name %></a></h4>
+                                                                                <h4 class="crancy-table__product-title"><a href="/businesses/edit-merchant/<%= merchant._id %>"><%= merchant.name %></a></h4>
                                                                             </td>
                                                                             <td class="crancy-table__column-3 crancy-table__data-3">
-                                                                                <p class="crancy-table__product-desc"><%= merchant.state.isoCode %>, <%= merchant.country.name %></p>
+                                                                                <p class="crancy-table__product-desc"><%= merchant.state.isoCode %></p>
                                                                             </td>
                                                                             <td class="crancy-table__column-3 crancy-table__data-3">
                                                                                 <p class="crancy-table__product-desc">3,245,223</p>

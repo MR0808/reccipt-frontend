@@ -13,7 +13,11 @@
 							<ul class="crancy-pbreadcrumb__list">
 								<li><a href="/">Home</a></li>
 								<li><a href="/businesses">Businesses</a></li>
-								<li class="active"><a href="/business/add-business">Add Business</a></li>
+								<% if (editing) { %>
+									<li class="active"><a href="/business/edit-business/<%= businessId %>">Edit Business</a></li>
+								<% } else { %>
+									<li class="active"><a href="/business/add-business">Add Business</a></li>
+								<% } %>
 							</ul>
 						</div>
 						<!-- End BreadCrumb -->

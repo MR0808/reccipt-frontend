@@ -67,17 +67,21 @@ export async function getBusiness(req, res, next) {
         const business = await Business.findOne({ slug: businessSlug })
             .populate('primaryContact')
             .populate('users')
-            .populate('state')
-            .populate('country');
-        const merchants = await Merchant.find({ business: business._id })
-            .populate('state')
-            .populate('country');
-        console.log(merchants);
+            .populate('state', 'isoCode')
+            .populate('country', 'name')
+            .populate('merchants')
+            .populate({
+                path: 'merchants',
+                populate: { path: 'state', select: 'isoCode' }
+            })
+            .populate({
+                path: 'merchants',
+                populate: { path: 'country', select: 'name, isoCode' }
+            });
         res.render('businesses/business-view', {
             pageTitle: business.name,
             path: '/business/business',
-            business: business,
-            merchants: merchants
+            business: business
         });
     } catch (err) {
         const error = new Error(err);
@@ -274,6 +278,7 @@ export async function postEditBusiness(req, res, next) {
 export async function getAddMerchant(req, res, next) {
     try {
         const businessId = req.query.business;
+        const business = await Business.findById(businessId);
         const countries = await Country.find().sort('name');
         const defaultCountry = await Country.findOne({ name: 'Australia' });
         const states = await State.find({ country: defaultCountry._id }).sort(
@@ -292,6 +297,7 @@ export async function getAddMerchant(req, res, next) {
             hasError: false,
             validationErrors: [],
             businessId: businessId,
+            business: business,
             countries: countries,
             states: states,
             ecomTypes: ecomTypes,
@@ -333,6 +339,7 @@ export async function postAddMerchant(req, res, next) {
             });
         }
         try {
+            const business = await Business.findById(businessId);
             const countries = await Country.find().sort('name');
             const states = await State.find({
                 country: merchantForm.country
@@ -358,7 +365,8 @@ export async function postAddMerchant(req, res, next) {
                 ecomTypes: ecomTypes,
                 merchantTypes: merchantTypes,
                 businessUsers: businessUsers,
-                merchant: merchantForm
+                merchant: merchantForm,
+                business: business
             });
         } catch (err) {
             const error = new Error(err);
@@ -367,37 +375,42 @@ export async function postAddMerchant(req, res, next) {
         }
     }
     const apiKey = genAPIKey();
+    const state = mongoose.Types.ObjectId.createFromHexString(
+        merchantForm.state
+    );
+    const country = mongoose.Types.ObjectId.createFromHexString(
+        merchantForm.country
+    );
+    const merchantType = mongoose.Types.ObjectId.createFromHexString(
+        merchantForm.merchantType
+    );
+    const ecomType = mongoose.Types.ObjectId.createFromHexString(
+        merchantForm.ecomType
+    );
+    const primaryContact = mongoose.Types.ObjectId.createFromHexString(
+        merchantForm.primaryContact
+    );
     const merchant = new Merchant({
         name: merchantForm.name,
         address1: merchantForm.address1,
         address2: merchantForm.address2,
         suburb: merchantForm.suburb,
         postcode: merchantForm.postcode,
-        state: mongoose.Types.ObjectId.createFromHexString(merchantForm.state),
-        country: mongoose.Types.ObjectId.createFromHexString(
-            merchantForm.country
-        ),
+        state: state,
+        country: country,
         categories: {
-            merchantType: mongoose.Types.ObjectId.createFromHexString(
-                merchantForm.merchantType
-            ),
-            ecomType: mongoose.Types.ObjectId.createFromHexString(
-                merchantForm.ecomType
-            )
+            merchantType: merchantType,
+            ecomType: ecomType
         },
         abn: merchantForm.abn,
         acn: merchantForm.acn,
         apiKey: (await apiKey).hashedToken,
         logoUrl: logoUrl,
-        primaryContact: mongoose.Types.ObjectId.createFromHexString(
-            merchantForm.primaryContact
-        ),
+        primaryContact: primaryContact,
         business: merchantForm.businessId
     });
     merchant.users.push({
-        user: mongoose.Types.ObjectId.createFromHexString(
-            merchantForm.primaryContact
-        ),
+        user: primaryContact,
         access: 'Admin'
     });
     try {
@@ -408,6 +421,114 @@ export async function postAddMerchant(req, res, next) {
         const business = await Business.findById(businessId);
         business.merchants.push(newMerchant);
         await business.save();
+        res.redirect('/businesses');
+    } catch (err) {
+        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    }
+}
+
+export async function getEditMerchant(req, res, next) {
+    const merchantId = req.params.merchantId;
+    try {
+        const merchant = await Merchant.findById(merchantId);
+        if (!merchant) {
+            return res.redirect('/');
+        }
+        const countries = await Country.find().sort('name');
+        const states = await State.find({ country: merchant.country });
+        const ecomTypes = await EcomType.find().sort('name');
+        const merchantTypes = await MerchantType.find().sort('name');
+        const businessUsers = await BusinessUser.find({
+            'business.business': merchant.business,
+            'business.access': { $in: ['Admin', 'User'] }
+        }).sort('lastName');
+        const business = await Business.findById(merchant.business);
+        res.render('businesses/merchant-edit', {
+            pageTitle: 'Edit Merchant',
+            path: '/business/edit-merchant',
+            editing: true,
+            hasError: false,
+            validationErrors: [],
+            businessId: merchant.business,
+            countries: countries,
+            states: states,
+            ecomTypes: ecomTypes,
+            merchantTypes: merchantTypes,
+            businessUsers: businessUsers,
+            merchant: merchant,
+            business: business
+        });
+    } catch (err) {
+        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    }
+}
+
+export async function postEditMerchant(req, res, next) {
+    const merchantId = req.body.merchantId;
+    const businessId = req.body.businessId;
+    let merchantForm = req.body;
+    const logo = req.file;
+    const errors = validationResult(req);
+    try {
+        const merchant = await Merchant.findById(merchantId);
+        merchantForm = {
+            ...merchantForm,
+            _id: merchantId,
+            logoUrl: merchant.logoUrl
+        };
+        if (!errors.isEmpty()) {
+            const countries = await Country.find().sort('name');
+            const states = await State.find({
+                country: merchantForm.country
+            }).sort('name');
+            const ecomTypes = await EcomType.find().sort('name');
+            const merchantTypes = await MerchantType.find().sort('name');
+            const business = await Business.findById(merchant.business);
+            return res.status(422).render('businesses/merchant-edit', {
+                pageTitle: 'Edit Merchant',
+                path: '/business/edit-merchant',
+                editing: true,
+                hasError: true,
+                countries: countries,
+                states: states,
+                ecomTypes: ecomTypes,
+                merchantTypes: merchantTypes,
+                merchant: merchantForm,
+                businessId: businessId,
+                validationErrors: errors.array(),
+                business: business
+            });
+        }
+        merchant.name = merchantForm.name;
+        merchant.address1 = merchantForm.address1;
+        merchant.address2 = merchantForm.address2;
+        merchant.suburb = merchantForm.suburb;
+        merchant.postcode = merchantForm.postcode;
+        merchant.state = mongoose.Types.ObjectId.createFromHexString(
+            merchantForm.state
+        );
+        merchant.country = mongoose.Types.ObjectId.createFromHexString(
+            merchantForm.country
+        );
+        merchant.categories.ecomType =
+            mongoose.Types.ObjectId.createFromHexString(merchantForm.ecomType);
+        merchant.categories.merchantType =
+            mongoose.Types.ObjectId.createFromHexString(
+                merchantForm.merchantType
+            );
+        merchant.abn = merchantForm.abn;
+        merchant.acn = merchantForm.acn;
+        if (logo) {
+            deleteFile(merchant.logoUrl);
+            merchant.logoUrl = logo.path.replace('\\', '/');
+        }
+        await merchant.save();
         res.redirect('/businesses');
     } catch (err) {
         console.log(err);
