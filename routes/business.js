@@ -34,4 +34,13 @@ router.post(
     businessController.postEditBusiness
 );
 
+router.get('/add-merchant', isAuth, businessController.getAddMerchant);
+
+router.post(
+    '/add-merchant',
+    isAuth,
+    ...validators.merchantValidationAdd,
+    businessController.postAddMerchant
+);
+
 export default router;

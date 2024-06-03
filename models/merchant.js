@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 
 var merchantSchema = new Schema(
     {
-        merchantName: {
+        name: {
             type: String,
             required: true
         },
@@ -22,7 +22,6 @@ var merchantSchema = new Schema(
         logoUrl: String,
         primaryContact: {
             type: Schema.Types.ObjectId,
-            required: true,
             ref: 'BusinessUser'
         },
         users: [
@@ -56,11 +55,7 @@ var merchantSchema = new Schema(
                 ref: 'eComType'
             }
         },
-        apiKey: {
-            type: String,
-            required: true,
-            default: genAPIKey()
-        },
+        apiKey: String,
         slug: {
             type: String,
             index: true
@@ -70,7 +65,7 @@ var merchantSchema = new Schema(
 );
 
 merchantSchema.pre('save', async function (next) {
-    this.slug = slugify(this.merchantName);
+    this.slug = slugify(this.name);
     next();
 });
 

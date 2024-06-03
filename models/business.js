@@ -53,10 +53,7 @@ var businessSchema = new Schema(
             enum: ['Draft', 'Pending', 'Active'],
             default: 'Draft'
         },
-        apiKey: {
-            type: String,
-            required: true
-        },
+        apiKey: String,
         slug: {
             type: String,
             index: true

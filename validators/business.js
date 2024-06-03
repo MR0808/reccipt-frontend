@@ -202,5 +202,33 @@ export const merchantValidation = [
                 return true;
             }
         })
-        .trim()
+        .trim(),
+    body('logo', 'Please upload a valid logo').notEmpty()
+];
+
+export const merchantValidationAdd = [
+    body('name', 'Please enter a business name')
+        .exists({ checkFalsy: true })
+        .bail()
+        .isString()
+        .bail()
+        .custom(async (value, { req }) => {
+            const merchantDoc = await Merchant.findOne({
+                slug: slugify(value)
+            });
+            if (merchantDoc) {
+                return Promise.reject('Merchant already exists.');
+            }
+        })
+        .trim(),
+    body('address1', 'Please enter an address line 1')
+        .exists({ checkFalsy: true })
+        .trim(),
+    body('address2').trim(),
+    body('suburb', 'Please enter a suburb').exists({ checkFalsy: true }).trim(),
+    body('postcode', 'Please enter a postcode')
+        .exists({ checkFalsy: true })
+        .trim(),
+    body('abn', 'Please enter an ABN').exists({ checkFalsy: true }).trim(),
+    body('acn', 'Please enter an ACN').exists({ checkFalsy: true }).trim()
 ];
