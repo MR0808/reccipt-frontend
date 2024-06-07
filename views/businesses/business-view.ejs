@@ -1,4 +1,4 @@
-<%- include('../includes/head.ejs') %>
+<%- include('../includes/header.ejs') %>
 <body>
     <%- include('../includes/navigation.ejs') %>
 <!-- crancy Dashboard -->
@@ -96,7 +96,7 @@
                                             <div class="crancy-pcats__list list-group " id="list-tab" role="tablist">
                                                 <a class="list-group-item active" data-bs-toggle="list" href="#tab_1" role="tab" href="profile.html">Overview</a>
                                                 <a class="list-group-item" data-bs-toggle="list" href="#tab_merchants" role="tab">Merchants</a>
-                                                <a class="list-group-item" data-bs-toggle="list" href="#tab_3" role="tab">Users</a>
+                                                <a class="list-group-item" data-bs-toggle="list" href="#tab_users" role="tab">Users</a>
                                                 <a class="list-group-item" data-bs-toggle="list" href="#tab_4" role="tab">Invoices</a>
                                                 <a class="list-group-item" data-bs-toggle="list" href="#tab_5"role="tab">Contracts</a>
                                             </div>
@@ -533,408 +533,67 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="tab-pane fade" id="tab_3" role="tabpanel"
-                                                aria-labelledby="nav-home-tab">
-                                                <!-- Task Area -->
-                                                <div class="crancy-taskarea mg-top-30">
-                                                    <h3 class="crancy-taskarea__title m-0">Task Progress</h3>
-                                                    <div class="row">
-                                                        <div class="col-xxl-3 col-lg-6 col-md-6 col-12">
-                                                            <!-- Single Task -->
-                                                            <div
-                                                                class="crancy-tasksingle crancy-color1__opacity--bg mg-top-25">
-                                                                <h4 class="crancy-tasksingle__title"><a
-                                                                        href="#">Bank Website, App ui ux
-                                                                        design</a></h4>
-                                                                <p class="crancy-tasksingle__assign">Assign :
-                                                                    <span class="crancy-pcolor"> 2 Jan
-                                                                        2023,10:34PM</span>
-                                                                </p>
-                                                                <div
-                                                                    class="crancy-tasksingle__label crancy-progress__in">
-                                                                    Working Progress</div>
-                                                                <p class="crancy-tasksingle__text">Team Member
-                                                                </p>
-                                                                <div class="crancy-tasksingle__group">
-                                                                    <a href="#"><img src="img/author-1.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-2.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-3.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-4.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-5.png"
-                                                                            alt="author-img"></a>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Single Task -->
-                                                        </div>
-                                                        <div class="col-xxl-3 col-lg-6 col-md-6 col-12">
-                                                            <!-- Single Task -->
-                                                            <div
-                                                                class="crancy-tasksingle crancy-color2__opacity--bg mg-top-25">
-                                                                <h4 class="crancy-tasksingle__title"><a
-                                                                        href="#">Bank Website, App ui ux
-                                                                        design</a></h4>
-                                                                <p class="crancy-tasksingle__assign">Assign :
-                                                                    <span class="crancy-gcolor"> 2 Jan
-                                                                        2023,10:34PM</span>
-                                                                </p>
-                                                                <div
-                                                                    class="crancy-tasksingle__label crancy-progress__done">
-                                                                    Project Done</div>
-                                                                <p class="crancy-tasksingle__text">Team Member
-                                                                </p>
-                                                                <div class="crancy-tasksingle__group">
-                                                                    <a href="#"><img src="img/author-1.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-2.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-3.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-4.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-5.png"
-                                                                            alt="author-img"></a>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Single Task -->
-                                                        </div>
-                                                        <div class="col-xxl-3 col-lg-6 col-md-6 col-12">
-                                                            <!-- Single Task -->
-                                                            <div
-                                                                class="crancy-tasksingle crancy-color3__opacity--bg mg-top-25">
-                                                                <h4 class="crancy-tasksingle__title"><a
-                                                                        href="#">Bank Website, App ui ux
-                                                                        design</a></h4>
-                                                                <p class="crancy-tasksingle__assign">Assign :
-                                                                    <span class="crancy-color3"> 2 Jan
-                                                                        2023,10:34PM</span>
-                                                                </p>
-                                                                <div
-                                                                    class="crancy-tasksingle__label crancy-progress__hold">
-                                                                    Project Hold</div>
-                                                                <p class="crancy-tasksingle__text">Team Member
-                                                                </p>
-                                                                <div class="crancy-tasksingle__group">
-                                                                    <a href="#"><img src="img/author-1.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-2.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-3.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-4.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-5.png"
-                                                                            alt="author-img"></a>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Single Task -->
-                                                        </div>
-                                                        <div class="col-xxl-3 col-lg-6 col-md-6 col-12">
-                                                            <!-- Single Task -->
-                                                            <div
-                                                                class="crancy-tasksingle crancy-color4__opacity--bg mg-top-25">
-                                                                <h4 class="crancy-tasksingle__title"><a
-                                                                        href="#">Bank Website, App ui ux
-                                                                        design</a></h4>
-                                                                <p class="crancy-tasksingle__assign">Assign :
-                                                                    <span class="crancy-rcolor"> 2 Jan
-                                                                        2023,10:34PM</span>
-                                                                </p>
-                                                                <div
-                                                                    class="crancy-tasksingle__label crancy-progress__cancel">
-                                                                    Project Cancel</div>
-                                                                <p class="crancy-tasksingle__text">Team Member
-                                                                </p>
-                                                                <div class="crancy-tasksingle__group">
-                                                                    <a href="#"><img src="img/author-1.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-2.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-3.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-4.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-5.png"
-                                                                            alt="author-img"></a>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Single Task -->
-                                                        </div>
-                                                        <div class="col-xxl-3 col-lg-6 col-md-6 col-12">
-                                                            <!-- Single Task -->
-                                                            <div
-                                                                class="crancy-tasksingle crancy-color2__opacity--bg mg-top-25">
-                                                                <h4 class="crancy-tasksingle__title"><a
-                                                                        href="#">Bank Website, App ui ux
-                                                                        design</a></h4>
-                                                                <p class="crancy-tasksingle__assign">Assign :
-                                                                    <span class="crancy-gcolor"> 2 Jan
-                                                                        2023,10:34PM</span>
-                                                                </p>
-                                                                <div
-                                                                    class="crancy-tasksingle__label crancy-progress__done">
-                                                                    Project Done</div>
-                                                                <p class="crancy-tasksingle__text">Team Member
-                                                                </p>
-                                                                <div class="crancy-tasksingle__group">
-                                                                    <a href="#"><img src="img/author-1.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-2.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-3.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-4.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-5.png"
-                                                                            alt="author-img"></a>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Single Task -->
-                                                        </div>
-                                                        <div class="col-xxl-3 col-lg-6 col-md-6 col-12">
-                                                            <!-- Single Task -->
-                                                            <div
-                                                                class="crancy-tasksingle crancy-color4__opacity--bg mg-top-25">
-                                                                <h4 class="crancy-tasksingle__title"><a
-                                                                        href="#">Bank Website, App ui ux
-                                                                        design</a></h4>
-                                                                <p class="crancy-tasksingle__assign">Assign :
-                                                                    <span class="crancy-rcolor"> 2 Jan
-                                                                        2023,10:34PM</span>
-                                                                </p>
-                                                                <div
-                                                                    class="crancy-tasksingle__label crancy-progress__cancel">
-                                                                    Project Cancel</div>
-                                                                <p class="crancy-tasksingle__text">Team Member
-                                                                </p>
-                                                                <div class="crancy-tasksingle__group">
-                                                                    <a href="#"><img src="img/author-1.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-2.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-3.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-4.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-5.png"
-                                                                            alt="author-img"></a>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Single Task -->
-                                                        </div>
-                                                        <div class="col-xxl-3 col-lg-6 col-md-6 col-12">
-                                                            <!-- Single Task -->
-                                                            <div
-                                                                class="crancy-tasksingle crancy-color3__opacity--bg mg-top-25">
-                                                                <h4 class="crancy-tasksingle__title"><a
-                                                                        href="#">Bank Website, App ui ux
-                                                                        design</a></h4>
-                                                                <p class="crancy-tasksingle__assign">Assign :
-                                                                    <span class="crancy-color3"> 2 Jan
-                                                                        2023,10:34PM</span>
-                                                                </p>
-                                                                <div
-                                                                    class="crancy-tasksingle__label crancy-progress__hold">
-                                                                    Project Hold</div>
-                                                                <p class="crancy-tasksingle__text">Team Member
-                                                                </p>
-                                                                <div class="crancy-tasksingle__group">
-                                                                    <a href="#"><img src="img/author-1.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-2.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-3.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-4.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-5.png"
-                                                                            alt="author-img"></a>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Single Task -->
-                                                        </div>
-                                                        <div class="col-xxl-3 col-lg-6 col-md-6 col-12">
-                                                            <!-- Single Task -->
-                                                            <div
-                                                                class="crancy-tasksingle crancy-color1__opacity--bg mg-top-25">
-                                                                <h4 class="crancy-tasksingle__title"><a
-                                                                        href="#">Bank Website, App ui ux
-                                                                        design</a></h4>
-                                                                <p class="crancy-tasksingle__assign">Assign :
-                                                                    <span class="crancy-pcolor"> 2 Jan
-                                                                        2023,10:34PM</span>
-                                                                </p>
-                                                                <div
-                                                                    class="crancy-tasksingle__label crancy-progress__in">
-                                                                    Project Hold</div>
-                                                                <p class="crancy-tasksingle__text">Team Member
-                                                                </p>
-                                                                <div class="crancy-tasksingle__group">
-                                                                    <a href="#"><img src="img/author-1.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-2.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-3.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-4.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-5.png"
-                                                                            alt="author-img"></a>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Single Task -->
-                                                        </div>
-                                                        <div class="col-xxl-3 col-lg-6 col-md-6 col-12">
-                                                            <!-- Single Task -->
-                                                            <div
-                                                                class="crancy-tasksingle crancy-color1__opacity--bg mg-top-25">
-                                                                <h4 class="crancy-tasksingle__title"><a
-                                                                        href="#">Bank Website, App ui ux
-                                                                        design</a></h4>
-                                                                <p class="crancy-tasksingle__assign">Assign :
-                                                                    <span class="crancy-pcolor"> 2 Jan
-                                                                        2023,10:34PM</span>
-                                                                </p>
-                                                                <div
-                                                                    class="crancy-tasksingle__label crancy-progress__in">
-                                                                    Project Hold</div>
-                                                                <p class="crancy-tasksingle__text">Team Member
-                                                                </p>
-                                                                <div class="crancy-tasksingle__group">
-                                                                    <a href="#"><img src="img/author-1.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-2.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-3.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-4.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-5.png"
-                                                                            alt="author-img"></a>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Single Task -->
-                                                        </div>
-                                                        <div class="col-xxl-3 col-lg-6 col-md-6 col-12">
-                                                            <!-- Single Task -->
-                                                            <div
-                                                                class="crancy-tasksingle crancy-color2__opacity--bg mg-top-25">
-                                                                <h4 class="crancy-tasksingle__title"><a
-                                                                        href="#">Bank Website, App ui ux
-                                                                        design</a></h4>
-                                                                <p class="crancy-tasksingle__assign">Assign :
-                                                                    <span class="crancy-gcolor"> 2 Jan
-                                                                        2023,10:34PM</span>
-                                                                </p>
-                                                                <div
-                                                                    class="crancy-tasksingle__label crancy-progress__done">
-                                                                    Project Done</div>
-                                                                <p class="crancy-tasksingle__text">Team Member
-                                                                </p>
-                                                                <div class="crancy-tasksingle__group">
-                                                                    <a href="#"><img src="img/author-1.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-2.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-3.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-4.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-5.png"
-                                                                            alt="author-img"></a>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Single Task -->
-                                                        </div>
-                                                        <div class="col-xxl-3 col-lg-6 col-md-6 col-12">
-                                                            <!-- Single Task -->
-                                                            <div
-                                                                class="crancy-tasksingle crancy-color3__opacity--bg mg-top-25">
-                                                                <h4 class="crancy-tasksingle__title"><a
-                                                                        href="#">Bank Website, App ui ux
-                                                                        design</a></h4>
-                                                                <p class="crancy-tasksingle__assign">Assign :
-                                                                    <span class="crancy-color3"> 2 Jan
-                                                                        2023,10:34PM</span>
-                                                                </p>
-                                                                <div
-                                                                    class="crancy-tasksingle__label crancy-progress__hold">
-                                                                    Project Hold</div>
-                                                                <p class="crancy-tasksingle__text">Team Member
-                                                                </p>
-                                                                <div class="crancy-tasksingle__group">
-                                                                    <a href="#"><img src="img/author-1.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-2.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-3.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-4.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-5.png"
-                                                                            alt="author-img"></a>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Single Task -->
-                                                        </div>
-                                                        <div class="col-xxl-3 col-lg-6 col-md-6 col-12">
-                                                            <!-- Single Task -->
-                                                            <div
-                                                                class="crancy-tasksingle crancy-color4__opacity--bg mg-top-25">
-                                                                <h4 class="crancy-tasksingle__title"><a
-                                                                        href="#">Bank Website, App ui ux
-                                                                        design</a></h4>
-                                                                <p class="crancy-tasksingle__assign">Assign :
-                                                                    <span class="crancy-rcolor"> 2 Jan
-                                                                        2023,10:34PM</span>
-                                                                </p>
-                                                                <div
-                                                                    class="crancy-tasksingle__label crancy-progress__cancel">
-                                                                    Project Cancel</div>
-                                                                <p class="crancy-tasksingle__text">Team Member
-                                                                </p>
-                                                                <div class="crancy-tasksingle__group">
-                                                                    <a href="#"><img src="img/author-1.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-2.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-3.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-4.png"
-                                                                            alt="author-img"></a>
-                                                                    <a href="#"><img src="img/author-5.png"
-                                                                            alt="author-img"></a>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Single Task -->
+                                            <div class="tab-pane fade" id="tab_users" role="tabpanel" aria-labelledby="nav-home-tab">
+                                                <div class="crancy-table crancy-table__tabs mg-top-30">
+                                                    <div class="tab-content" id="myTabContent">
+                                                        <div class="tab-pane fade show active" id="table_1" role="tabpanel" aria-labelledby="table_1">
+                                                            <div class="crancy-table__heading m-0 mg-btm-10">
+																<ul class="crancy-upcard__social">
+                                                                    <a href="/businesses/add-user/?business=<%= business._id %>" class="crancy-btn crancy-ybcolor crancy-btn__profile">Add User</a>
+                                                                </ul>
+															</div>
+                                                            <!-- crancy Table -->
+                                                            <table id="crancy-table__main" class="crancy-table__main crancy-table__main-v1">
+                                                                <!-- crancy Table Head -->
+                                                                <thead class="crancy-table__head">
+                                                                    <tr>
+                                                                        <th class="crancy-table__column-2 crancy-table__h1">Name</th>
+                                                                        <th class="crancy-table__column-3 crancy-table__h2">Email</th>
+                                                                        <th class="crancy-table__column-3 crancy-table__h3">Phone</th>
+                                                                        <th class="crancy-table__column-4 crancy-table__h4">Businesses/Merchants</th>
+                                                                        <th class="crancy-table__column-5 crancy-table__h5">Access</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <!-- crancy Table Body -->
+                                                                <tbody class="crancy-table__body">
+                                                                    <% 
+                                                                    for (let user of users) { 
+                                                                    %>
+                                                                        <tr>
+                                                                            <td class="crancy-table__column-1 crancy-table__data-1">
+                                                                                <h4 class="crancy-table__product-title"><a href="/businesses/edit-user/<%= user._id %>"><%= user.firstName %> <%= user.lastName %></h4>
+                                                                            </td>
+                                                                            <td class="crancy-table__column-2 crancy-table__data-2">
+                                                                                <p class="crancy-table__product-desc"><a href="mailto:<%= user.email %>"><%= user.email %></a></p>
+                                                                            </td>
+                                                                            <td class="crancy-table__column-3 crancy-table__data-3">
+                                                                                <p class="crancy-table__product-desc"><%= user.phoneNumber %></p>
+                                                                            </td>
+                                                                            <td class="crancy-table__column-3 crancy-table__data-3">
+                                                                                <% if (user.business) { %>
+                                                                                    <p class="crancy-table__product-desc"><%= user.business.business.name %></p>
+                                                                                <% } %>
+                                                                                <% user.merchants.forEach((merchant) => { %>
+                                                                                    <p class="crancy-table__product-desc"><%= merchant.merchant.name %></p>
+                                                                                <% }) %>
+                                                                            </td>
+                                                                            <td class="crancy-table__column-5 crancy-table__data-5">
+                                                                                <% if (user.business) { %>
+                                                                                    <p class="crancy-table__product-desc"><%= user.business.access %></p>
+                                                                                <% } %>
+                                                                                <% user.merchants.forEach((merchant) => { %>
+                                                                                    <p class="crancy-table__product-desc"><%= merchant.access %></p>
+                                                                                <% }) %>
+                                                                            </td>
+                                                                        </tr>
+                                                                    <% } %>                                                                 
+                                                                </tbody>
+                                                                <!-- End crancy Table Body -->
+                                                            </table>
+                                                            <!-- End crancy Table -->
                                                         </div>
                                                     </div>
-
-                                                    <div class="row mg-top-30">
-                                                        <div class="crancy-pagination">
-                                                            <ul class="crancy-pagination__list">
-                                                                <li class="crancy-pagination__button"><a
-                                                                        href="#"><i
-                                                                            class="fas fa-angle-left"></i></a>
-                                                                </li>
-                                                                <li><a href="#">1</a></li>
-                                                                <li class="active"><a href="#">2</a></li>
-                                                                <li><a href="#">3</a></li>
-                                                                <li><a href="#">...</a></li>
-                                                                <li><a href="#">4</a></li>
-                                                                <li class="crancy-pagination__button"><a
-                                                                        href="#"><i
-                                                                            class="fas fa-angle-right"></i></a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-
                                                 </div>
-                                                <!-- End Task Area -->
                                             </div>
                                             <div class="tab-pane fade" id="tab_4" role="tabpanel"
                                                 aria-labelledby="nav-home-tab">
@@ -2510,7 +2169,7 @@
 
 </div>
 
-    <%- include('../includes/end.ejs') %>
+    <%- include('../includes/footer.ejs') %>
     
 </body>
 

@@ -1,4 +1,4 @@
-<%- include('../includes/head.ejs') %>
+<%- include('../includes/header.ejs') %>
 <body>
     <%- include('../includes/navigation.ejs') %>
 
@@ -14,7 +14,7 @@
 								<li><a href="/">Home</a></li>
 								<li><a href="/businesses">Businesses</a></li>
 								<% if (editing) { %>
-									<li class="active"><a href="/business/edit-business/<%= businessId %>">Edit Business</a></li>
+									<li class="active"><a href="/business/edit-business/<%= business._id %>">Edit Business</a></li>
 								<% } else { %>
 									<li class="active"><a href="/business/add-business">Add Business</a></li>
 								<% } %>
@@ -194,7 +194,7 @@
 		<!-- End crancy Dashboard -->
 	</div>
 
-    <%- include('../includes/end.ejs') %>
+    <%- include('../includes/footer.ejs') %>
 	<script src="/js/state.js"></script>
 
 </body>

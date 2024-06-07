@@ -15,11 +15,20 @@ import generatePassword from '../util/password.js';
 import deleteFile from '../util/file.js';
 
 export async function getBusinesses(req, res, next) {
-    const itemsPerPage = req.session.itemsPerPage || 10;
-    const page = +req.query.page || 1;
+    const itemsPerPage = req.query.itemsPerPage || 10;
+    const page = req.query.page || 1;
+    const search = req.query.s || '';
 
     try {
-        let totalItems = await Business.find().countDocuments();
+        let totalItems;
+        let businesses;
+        if (search === '') {
+            totalItems = await Business.find().countDocuments();
+        } else {
+            totalItems = await Business.find({
+                $text: { $search: search }
+            }).countDocuments();
+        }
         const totalPages = Math.ceil(totalItems / itemsPerPage);
         let lowerPage = page - 4; //5
         if (lowerPage < 1) lowerPage = 1; //no
@@ -29,12 +38,23 @@ export async function getBusinesses(req, res, next) {
         if (upperPage === totalPages && totalPages > 9) {
             lowerPage = upperPage - 9;
         }
-        const businesses = await Business.find({})
-            .sort('name')
-            .skip((page - 1) * itemsPerPage)
-            .limit(itemsPerPage)
-            .populate('state')
-            .populate('country');
+        if (search === '') {
+            businesses = await Business.find()
+                .sort('name')
+                .skip((page - 1) * itemsPerPage)
+                .limit(itemsPerPage)
+                .populate('state')
+                .populate('country');
+        } else {
+            businesses = await Business.find({
+                $text: { $search: search }
+            })
+                .sort('name')
+                .skip((page - 1) * itemsPerPage)
+                .limit(itemsPerPage)
+                .populate('state')
+                .populate('country');
+        }
         res.render('businesses/business-list', {
             pageTitle: 'Businesses',
             path: '/business/businesses',
@@ -56,17 +76,11 @@ export async function getBusinesses(req, res, next) {
     }
 }
 
-export async function setSessionBusinesses(req, res, next) {
-    req.session.itemsPerPage = req.query.results;
-    return res.status(200).json({ data: req.session.itemsPerPage });
-}
-
 export async function getBusiness(req, res, next) {
     const businessSlug = req.params.slug;
     try {
         const business = await Business.findOne({ slug: businessSlug })
             .populate('primaryContact')
-            .populate('users')
             .populate('state', 'isoCode')
             .populate('country', 'name')
             .populate('merchants')
@@ -78,12 +92,32 @@ export async function getBusiness(req, res, next) {
                 path: 'merchants',
                 populate: { path: 'country', select: 'name, isoCode' }
             });
+
+        const users = await BusinessUser.find({
+            $or: [
+                { 'business.business': business },
+                { 'merchants.merchant': { $in: business.merchants } }
+            ]
+        })
+            .sort('lastName firstName')
+            .populate({
+                path: 'business.business',
+                model: 'Business',
+                select: 'name'
+            })
+            .populate({
+                path: 'merchants.merchant',
+                model: 'Merchant',
+                select: 'name'
+            });
         res.render('businesses/business-view', {
             pageTitle: business.name,
             path: '/business/business',
-            business: business
+            business: business,
+            users: users
         });
     } catch (err) {
+        console.log(err);
         const error = new Error(err);
         error.httpStatusCode = 500;
         return next(error);
@@ -532,6 +566,27 @@ export async function postEditMerchant(req, res, next) {
         res.redirect('/businesses');
     } catch (err) {
         console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    }
+}
+
+export async function deleteBusiness(req, res, next) {
+    const businessId = req.params.businessId;
+    try {
+        const business = await Business.findById(businessId);
+        if (!business) {
+            return next(new Error('Business not found.'));
+        }
+        business.status = 'Inactive';
+        await business.save();
+        await Merchant.updateMany(
+            { business: business },
+            { status: 'Inactive' }
+        );
+        res.status(200).json({ message: 'Success!' });
+    } catch (err) {
         const error = new Error(err);
         error.httpStatusCode = 500;
         return next(error);

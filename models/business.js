@@ -50,7 +50,7 @@ var businessSchema = new Schema(
         ],
         status: {
             type: String,
-            enum: ['Draft', 'Pending', 'Active'],
+            enum: ['Draft', 'Pending', 'Active', 'Inactive'],
             default: 'Draft'
         },
         apiKey: String,
@@ -61,6 +61,8 @@ var businessSchema = new Schema(
     },
     { timestamps: true }
 );
+
+businessSchema.index({ name: 'text', name: 'text' });
 
 businessSchema.pre('save', async function (next) {
     this.slug = slugify(this.name);

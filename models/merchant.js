@@ -48,7 +48,7 @@ var merchantSchema = new Schema(
         },
         status: {
             type: String,
-            enum: ['Draft', 'Pending', 'Active'],
+            enum: ['Draft', 'Pending', 'Active', 'Inactive'],
             default: 'Draft'
         },
         categories: {

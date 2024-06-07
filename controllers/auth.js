@@ -56,7 +56,6 @@ export const getSignup = (req, res, next) => {
 };
 
 export async function postLogin(req, res, next) {
-    console.log(req.body.CSRFToken);
     const email = req.body.email;
     const password = req.body.password;
     const errors = validationResult(req);
@@ -97,7 +96,6 @@ export async function postLogin(req, res, next) {
             req.session.isLoggedIn = true;
             req.session.user = user;
             return req.session.save((err) => {
-                console.log(err);
                 res.redirect('/');
             });
         } else {

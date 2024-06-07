@@ -8,8 +8,6 @@ const router = express.Router();
 
 router.get('/', isAuth, businessController.getBusinesses);
 
-router.get('/set-session', isAuth, businessController.setSessionBusinesses);
-
 router.get('/add-business', isAuth, businessController.getAddBusiness);
 
 router.post(
@@ -55,5 +53,7 @@ router.post(
     ...validators.merchantValidationEdit,
     businessController.postEditMerchant
 );
+
+router.delete('/remove/:businessId', isAuth, businessController.deleteBusiness);
 
 export default router;

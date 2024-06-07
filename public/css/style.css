@@ -9655,6 +9655,15 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 	color: #9B51E0;
 }
 
+.crancy-table__status.crancy-table__status--Inactive {
+	background: #FAEFEE;
+	color: #FF4747;
+}
+
+.menu_icons {
+	margin-right: 10px;
+}
+
 /*======================================
 	End Custom CSS
 ========================================*/

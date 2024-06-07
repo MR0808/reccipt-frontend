@@ -24,7 +24,7 @@ var businessUserSchema = new Schema(
         business: {
             business: {
                 type: Schema.Types.ObjectId,
-                ref: 'business'
+                ref: 'Business'
             },
             access: {
                 type: String,
@@ -35,7 +35,7 @@ var businessUserSchema = new Schema(
             {
                 merchant: {
                     type: Schema.Types.ObjectId,
-                    ref: 'business'
+                    ref: 'Business'
                 },
                 access: {
                     type: String,

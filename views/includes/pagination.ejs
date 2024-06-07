@@ -4,7 +4,7 @@
             disabled
         <% } %>" id="crancy-table__main_previous">
             <a href="<% if (hasPreviousPage) { %>
-                ?page=<%= previousPage %>
+                ?itemsPerPage=<%= results %>&page=<%= previousPage %>
             <% } %>" aria-controls="crancy-table__main" data-dt-idx="previous" tabindex="0" class="page-link">
                 <i class="fas fa-angle-left"></i>
             </a>
@@ -14,7 +14,7 @@
         let count = lowerPage;
         while (count <= upperPage) { %>
         <li class="paginate_button page-item <% if (count === currentPage) { %>active<% } %>">
-            <a href="?page=<%= count %>" aria-controls="crancy-table__main" data-dt-idx="0" tabindex="0" class="page-link"><%= count %></a>
+            <a href="?itemsPerPage=<%= results %>&page=<%= count %>" aria-controls="crancy-table__main" data-dt-idx="0" tabindex="0" class="page-link"><%= count %></a>
         </li>
         <% count++
         } %>
@@ -23,7 +23,7 @@
             disabled
         <% } %>" id="crancy-table__main_next">
             <a href="<% if (hasNextPage) { %>
-                ?page=<%= nextPage %>
+                ?itemsPerPage=<%= results %>&page=<%= nextPage %>
             <% } %>" aria-controls="crancy-table__main" data-dt-idx="next" tabindex="0" class="page-link">
                 <i class="fas fa-angle-right"></i>
             </a>

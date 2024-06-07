@@ -1,4 +1,4 @@
-<%- include('../includes/head.ejs') %>
+<%- include('../includes/header.ejs') %>
 <body>
     <%- include('../includes/navigation.ejs') %>
 
@@ -27,12 +27,13 @@
                                 <div class="crancy-customer-filter">
                                     <div class="crancy-customer-filter__single crancy-customer-filter__single--csearch">
                                         <div class="crancy-header__form crancy-header__form--customer">
-                                            <form class="crancy-header__form-inner" action="#">
+                                            <form class="crancy-header__form-inner" action="/businesses" method="GET">
+                                                <input type="hidden" value="<%= currentPage %>" name="page" id="page">
+                                                <input type="hidden" value="<%= results %>" name="itemsPerPage" id="itemsPerPage">
                                                 <button class="search-btn" type="submit">
-                                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <circle cx="9.78639" cy="9.78614" r="8.23951" stroke="#9AA2B1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
-                                                        <path d="M15.5176 15.9448L18.7479 19.1668" stroke="#9AA2B1" stroke-width="1.5" stroke-linecap="round"stroke-linejoin="round"></path>
-                                                    </svg>
+                                                    <span style="color: #9AA2B1">
+                                                        <i class="fa-solid fa-magnifying-glass fa-xl"></i>
+                                                    </span>
                                                 </button>
                                                 <input name="s" value="" type="text" placeholder="Search by ID, product, or others...">
                                             </form>
@@ -54,6 +55,7 @@
                                             <th class="crancy-table__column-3 crancy-table__h3">Merchants</th>
                                             <th class="crancy-table__column-4 crancy-table__h4">Transactions (<%= new Date().getFullYear() %>)</th>
                                             <th class="crancy-table__column-5 crancy-table__h5">Status</th>
+                                            <th class="crancy-table__column-5 crancy-table__h6">&nbsp</th>
                                         </tr>
                                     </thead>
                                     <!-- crancy Table Body -->
@@ -61,7 +63,7 @@
                                         <% 
                                             for (let business of businesses) { 
                                         %>
-                                        <tr>
+                                        <tr id="<%= business.slug %>">
                                             <td class="crancy-table__column-1 crancy-table__data-1">
                                                 <h4 class="crancy-table__product-title"><a href="/businesses/business/<%= business.slug %>"><%= business.name %></a></h4>
                                             </td>
@@ -71,12 +73,18 @@
                                             <td class="crancy-table__column-3 crancy-table__data-3">
                                                 <p class="crancy-table__product-desc"><%= business.merchants.length %></p>
                                             </td>
-                                            <td class="crancy-table__column-3 crancy-table__data-3">
+                                            <td class="crancy-table__column-3 crancy-table__data-4">
                                                 <p class="crancy-table__product-desc">3,245,223</p>
                                             </td>
                                             <td class="crancy-table__column-5 crancy-table__data-5">
                                                 <div class="crancy-table__actions crancy-table__actions--between">
                                                     <div class="crancy-table__status crancy-table__status--<%= business.status %>"><%= business.status %></div>
+                                            </td>
+                                            <td class="crancy-table__column-3 crancy-table__data-6">
+                                                <input type="hidden" value="<%= business._id %>" name="businessId" id="businessId">
+                                                <input type="hidden" value="<%= business.name %>" name="businessName" id="businessName">
+                                                <a href="/businesses/edit-business/<%= business._id %>" class="menu_icons"><i class="fa-solid fa-pen"></i></a>
+                                                <a id="deleteModalLink"><i class="fa-solid fa-trash"></i></a>
                                             </td>
                                         </tr>
                                         <% } %>
@@ -94,7 +102,7 @@
                                             </select>
                                         </label>
                                     </div>
-                                    <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+                                    <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage, results: results}) %>
                                 </div>
                             </div>
                         </div>
@@ -439,29 +447,36 @@
     </section>
     <!-- End crancy Dashboard -->
 	</div>
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Remove Business</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            Are you sure you wish to delete <span id="modalBusinessName"></span>?
+            <input type="hidden" value="" name="deleteBusinsessId" id="deleteBusinessId">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="modalDeleteBtn">Delete</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
 
-    <%- include('../includes/end.ejs') %>
+    <%- include('../includes/footer.ejs') %>
     <script>
-    document
-        .getElementById('showResults')
-        .addEventListener('change', async function (event) {
-            setSession(event);
-        });
-
-    async function setSession(event) {
-        console.log('here')
-        try {
-            const result = await fetch('/businesses/set-session?results=' + event.target.value);
-            const jsonStates = await result.json();
-            const states = jsonStates.data;
-            window.location.href = window.location.pathname+"?"+$.param({'page':'1'});
-        } catch (e) {
-            alert(e);
-            throw new Error(e);
-        }
-    }
-
+        document
+            .getElementById('showResults')
+            .addEventListener('change', async function (event) {
+                // setSession(event);
+                window.location.href = window.location.pathname+"?itemsPerPage=" + event.target.value + '&' + $.param({'page':'1'});
+            });
     </script>
+    <script src="/js/deleteBusiness.js"></script>
     
 </body>
 
